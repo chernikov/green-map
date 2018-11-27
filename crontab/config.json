@@ -1,0 +1,7 @@
+[{
+    "comment": "Backup mongo DB",
+    "schedule": "0 */2 * * *",
+    "container": "mongoDB",
+    "command": "sh /tmp/backups/script.sh",
+    "onstart": true
+}]
