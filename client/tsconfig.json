@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": "./src",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -16,6 +16,20 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@project-configs": ["app/shared/project-configs.ts"],
+      "@store": ["app/shared/redux/store.ts"],
+      "@global-reducers/*": ["app/shared/redux/global-reducers/*"],
+      "@classes/*": ["app/shared/classes/*"],
+      "@proxy-classes/*": ["app/shared/proxy-classes/*"],
+      "@components/*": ["app/shared/components/*"],
+      "@enums/*": ["app/shared/enums/*"],
+      "@guards/*": ["app/shared/guards/*"],
+      "@helpers/*": ["app/shared/helpers/*"],
+      "@pipes/*": ["app/shared/pipes/*"],
+      "@services/*": ["app/shared/services/*"],
+      "@subjects/*": ["app/shared/subjects/*"]
+    }
   }
 }

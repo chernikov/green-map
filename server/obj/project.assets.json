@@ -11506,11 +11506,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "G:\\projects\\green-map\\green-map\\green-map.csproj",
+      "projectUniqueName": "g:\\projects\\green-map\\server\\green-map.csproj",
       "projectName": "green-map",
-      "projectPath": "G:\\projects\\green-map\\green-map\\green-map.csproj",
+      "projectPath": "g:\\projects\\green-map\\server\\green-map.csproj",
       "packagesPath": "C:\\Users\\Root\\.nuget\\packages\\",
-      "outputPath": "G:\\projects\\green-map\\green-map\\obj\\",
+      "outputPath": "g:\\projects\\green-map\\server\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"

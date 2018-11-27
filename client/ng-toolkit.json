@@ -1,0 +1,7 @@
+{
+  "universal": {
+    "project": "green-map",
+    "skipInstall": false,
+    "directory": "."
+  }
+}

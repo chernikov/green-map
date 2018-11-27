@@ -1,0 +1,1 @@
+export const mapboxKey:string = 'pk.eyJ1IjoiZGltYS1zcG9kZW5pdWsiLCJhIjoiY2puMzdhaTU3Mjk1ajN2bzE4aHI2b3g3YyJ9.Z9FPIgx9zTCamYbB8U942w';
