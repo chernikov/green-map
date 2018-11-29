@@ -9,10 +9,23 @@ import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as compression from 'compression';
 import * as proxy from 'http-proxy-middleware';
+import * as domino from  "domino";
+import * as fs from "fs";
 
 import { join } from 'path';
 
 enableProdMode();
+
+const templateA = fs.readFileSync(join("./dist/browser", "index.html")).toString();
+const win = domino.createWindow(templateA) as any;
+
+win.Object = Object;
+win.Math = Math;
+
+global["window"] = win;
+global["document"] = win.document;
+global["branch"] = null;
+global["object"] = win.object;
 
 export const app = express();
 

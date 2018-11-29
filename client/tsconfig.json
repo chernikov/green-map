@@ -18,9 +18,11 @@
       "dom"
     ],
     "paths": {
+      "@animations": ["app/app.animation.ts"],
       "@project-configs": ["app/shared/project-configs.ts"],
       "@store": ["app/shared/redux/store.ts"],
       "@global-reducers/*": ["app/shared/redux/global-reducers/*"],
+      "@dispatch-classes/*": ["app/shared/redux/dispatch-classes/*"],
       "@classes/*": ["app/shared/classes/*"],
       "@proxy-classes/*": ["app/shared/proxy-classes/*"],
       "@components/*": ["app/shared/components/*"],

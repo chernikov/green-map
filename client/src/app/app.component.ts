@@ -1,16 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NotificationsService } from 'angular2-notifications';
 import { NgRedux } from '@angular-redux/store';
-
-import { User } from '@classes/user.class';
 
 import { IAppState } from '@store';
 
 import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
+import { SettingAction } from '@global-reducers/setting.reducer';
+
+import { SettingDispatch } from '@dispatch-classes/setting-dispatch.class';
+
+import { User } from '@classes/user.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
+
+import { SettingService } from '@services/setting.service';
 
 const tokenHelper = new JwtHelperService();
 
@@ -21,6 +27,7 @@ const tokenHelper = new JwtHelperService();
 })
 
 export class AppComponent implements OnInit {
+  isBrowser:boolean;
   notificationOptions = {
     showProgressBar: true,
     timeOut: 3400,
@@ -30,9 +37,11 @@ export class AppComponent implements OnInit {
   constructor(
     private _ngRedux:NgRedux<IAppState>,
     private _notificationSubject:NotificationSubject,
-    private _notificationsService:NotificationsService
+    private _notificationsService:NotificationsService,
+    private _settingService:SettingService,
+    @Inject(PLATFORM_ID) _platformId
   ) {
-
+    this.isBrowser = isPlatformBrowser(_platformId);
   }
 
   ngOnInit() {
@@ -42,7 +51,9 @@ export class AppComponent implements OnInit {
   }
 
   prebootData() {
-
+    this._settingService.get().subscribe(data => {
+      this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
+    });
   }
 
   watchNotification() {
@@ -50,7 +61,7 @@ export class AppComponent implements OnInit {
   }
 
   checkAuth() {
-    if(localStorage) {
+    if(this.isBrowser) {
       let token = localStorage.getItem('authToken');
 
       if(token) {

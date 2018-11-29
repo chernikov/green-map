@@ -1,1 +1,28 @@
-default module here
+<div class="page">
+    <div class="map" #mapElement></div>
+    <div class="content-wrapper" [@routerSlideAnimation]="getOutletDepth(mainOutlet)">
+        <router-outlet #mainOutlet="outlet"></router-outlet>
+    </div>
+    <div class="menu-wrap">
+        <nav>
+            <ul>
+                <li>
+                    <a class="nav-link" [routerLink]="['/']" [routerLinkActive]="['is-active']" [routerLinkActiveOptions]="{exact: true}">
+                        <i class="fal fa-home"></i>
+                        Головна
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link" [routerLink]="['/about']" [routerLinkActive]="['is-active']" [routerLinkActiveOptions]="{exact: true}">
+                        <i class="fal fa-info-circle"></i>
+                        О проекті
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <a class="nav-link" [routerLink]="['/admin']" [routerLinkActive]="['is-active']">
+            <i class="fal fa-cog"></i>
+            Адмін<br>панель
+        </a>
+    </div>
+</div>

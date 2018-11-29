@@ -1,0 +1,38 @@
+@import '~assets/scss/mixins.scss';
+
+ul {
+    li {
+        a {
+            display: block;
+            color: #fff;
+            padding: 20px;
+            font-size: 13px;
+            box-sizing: border-box;
+            text-transform: uppercase;
+            font-weight: 600;
+            @include transition(all .2s ease-out);
+            border-bottom: 1px solid #292929;
+            position: relative;
+            &:after {
+                content: '';
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: 0;
+                position: absolute;
+                background-color: $primary;
+                @include transition(all .3s ease-out);
+            }
+            &:hover, {
+                color: $primary;
+                text-decoration: none !important;
+            }
+            &.is-active {
+                color: $primary;
+                &:after {
+                    width: 5px;
+                }
+            }
+        }
+    }
+}

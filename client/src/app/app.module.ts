@@ -2,7 +2,7 @@ import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
@@ -26,7 +26,7 @@ import { AppComponent } from './app.component';
     SimpleNotificationsModule.forRoot(),
     MetaModule.forRoot(),
     BrowserTransferStateModule,
-    NoopAnimationsModule,
+    BrowserAnimationsModule,
     CommonModule,
     NgtUniversalModule,
     AppRoutingModule

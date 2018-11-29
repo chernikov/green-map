@@ -1,30 +1,20 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 
-/* 
 import { IsAdminGuard } from '@guards/is-admin.guard';
 
 import { AdminComponent } from './admin.component';
 import { MapConfigsComponent } from './map-configs/map-configs.component';
+import { SettingsComponent } from './settings/settings.component';
 
-export const router: Routes = [
-    { path: '', component: AdminComponent, canActivateChild: [IsAdminGuard],
+const routes: Routes = [
+    { path: '', component: AdminComponent/* , canActivateChild: [IsAdminGuard] */,
         children: [
-            { path: 'map-configs', component: MapConfigsComponent }
+            { path: 'map', component: MapConfigsComponent },
+            { path: 'settings', component: SettingsComponent }
         ]
     },
     { path: '**', redirectTo: '' }
-]
-
-export const AdminRoutes: ModuleWithProviders = RouterModule.forChild(router); */
-
-
-
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-
-import { AdminComponent } from './admin.component';
-
-const routes: Routes = [
-  { path: '', component: AdminComponent }
 ];
 
 @NgModule({

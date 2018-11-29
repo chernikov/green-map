@@ -36,6 +36,7 @@
     "angular2-notifications": "^1.0.4",
     "core-js": "^2.5.4",
     "cors": "~2.8.4",
+    "domino": "^2.1.0",
     "http-proxy-middleware": "^0.19.1",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.6",

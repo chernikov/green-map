@@ -1,0 +1,19 @@
+h3 {
+    font-size: 25px;
+    line-height: 35px;
+    margin-bottom: 7px;
+}
+
+.buttons-wrap {
+    margin-top: 26px;
+    display: flex;
+    justify-content: flex-start;
+    button {
+        margin-left: 20px;
+        width: 100%;
+        max-width: 200px;
+        &:first-child {
+            margin-left: 0;
+        }
+    }
+}

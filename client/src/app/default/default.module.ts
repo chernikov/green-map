@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import { DefaultRoutingModule } from './default-routing.module';
 
 import { DefaultComponent } from './default.component';
+import { AboutComponent } from './about/about.component';
+import { HomeComponent } from './home/home.component';
 
 @NgModule({
 	imports:[
@@ -11,7 +13,9 @@ import { DefaultComponent } from './default.component';
 		DefaultRoutingModule
 	],
 	declarations: [
-		DefaultComponent
+		DefaultComponent,
+		AboutComponent,
+		HomeComponent
 	],
 	providers: [ ]
 })

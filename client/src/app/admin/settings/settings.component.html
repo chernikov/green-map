@@ -1,0 +1,22 @@
+<form [formGroup]="form" novalidate>
+  <div class="block">
+    <h3>Seo</h3>
+    <div class="input-wrap">
+      <div class="input-title">
+        <label for="title">Title</label>
+      </div>
+      <!-- <div class="input-error" *ngIf="form.get('title').hasError('required') && form.get('title').touched">Title is required field.</div> -->
+      <input id="title" type="text" formControlName="title">
+    </div>
+    <div class="input-wrap">
+      <div class="input-title">
+        <label for="description">Description</label>
+      </div>
+      <textarea id="description" formControlName="description"></textarea>
+    </div>
+  </div>
+  <div class="buttons-wrap">
+    <button class="button primary" (click)="onUpdate()" [class.is-disabled]="form.invalid || isInProgress" [disabled]="form.invalid || isInProgress">Update</button>
+    <button class="button cancel" (click)="onCancel()">Cancel</button>
+  </div>
+</form>
