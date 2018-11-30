@@ -11,6 +11,8 @@ import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 import { SettingAction } from '@global-reducers/setting.reducer';
 
 import { SettingDispatch } from '@dispatch-classes/setting-dispatch.class';
+import { AuthTokenDispatch } from '@dispatch-classes/auth-token-dispatch.class';
+import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
 
 import { User } from '@classes/user.class';
 
@@ -51,9 +53,10 @@ export class AppComponent implements OnInit {
   }
 
   prebootData() {
-    /* this._settingService.get().subscribe(data => {
+    this._settingService.get().subscribe(data => {
+      console.log(data);
       this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
-    }); */
+    });
   }
 
   watchNotification() {
@@ -67,8 +70,8 @@ export class AppComponent implements OnInit {
         this.checkAuth(token);
         setInterval(() => {
           if(tokenHelper.isTokenExpired(token)) {
-            this._ngRedux.dispatch({ type: AuthTokenAction.remove });
-            this._ngRedux.dispatch({ type: AuthUserAction.remove });
+            this._ngRedux.dispatch({ type: AuthTokenAction.remove } as AuthTokenDispatch);
+            this._ngRedux.dispatch({ type: AuthUserAction.remove } as AuthUserDispatch);
           }
         }, 1500);
       }
@@ -80,11 +83,11 @@ export class AppComponent implements OnInit {
       let decoded = tokenHelper.decodeToken(token);
       let user = User.fromJS(JSON.parse(decoded.user));
 
-      this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: token });
-      this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user });
+      this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: token } as AuthTokenDispatch);
+      this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user } as AuthUserDispatch);
     } else {
-      this._ngRedux.dispatch({ type: AuthTokenAction.remove });
-      this._ngRedux.dispatch({ type: AuthUserAction.remove });
+      this._ngRedux.dispatch({ type: AuthTokenAction.remove } as AuthTokenDispatch);
+      this._ngRedux.dispatch({ type: AuthUserAction.remove } as AuthUserDispatch);
     }
   }
 }

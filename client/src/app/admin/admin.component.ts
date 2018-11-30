@@ -10,6 +10,9 @@ import { IAppState } from '@store';
 import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 
+import { AuthTokenDispatch } from '@dispatch-classes/auth-token-dispatch.class';
+import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
+
 import { User } from '@classes/user.class';
 import { Login } from '@classes/login.class';
 
@@ -72,8 +75,8 @@ export class AdminComponent implements OnInit {
           let decoded = tokenHelper.decodeToken(res.result);
           let user = User.fromJS(JSON.parse(decoded.user));
 
-          this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: res.result });
-          this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user });
+          this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: res.result } as AuthTokenDispatch);
+          this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user } as AuthUserDispatch);
           this._router.navigateByUrl('/admin/map');
         } else {
           this.formErrors = res.errors;

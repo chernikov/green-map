@@ -8,10 +8,10 @@ import { LoginResponse } from '@classes/login-response.class';
 @Injectable({ providedIn: 'root' })
 export class LoginService {
 	private apiUrl:string = '/api/login';
-    constructor(private http: HttpClient) {}
+    constructor(private _http:HttpClient) {}
 
     login(data:Login):Observable<LoginResponse> {
 		let headers = new HttpHeaders().set('Content-Type', 'application/json');
-		return this.http.post<LoginResponse>(this.apiUrl, data, { headers });
+		return this._http.post<LoginResponse>(this.apiUrl, data, { headers });
 	}
 }

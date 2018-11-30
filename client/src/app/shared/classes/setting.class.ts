@@ -1,4 +1,5 @@
 export class Setting implements ISetting {
+	id?:string;
     title:string;
 	description:string;
 
@@ -13,6 +14,7 @@ export class Setting implements ISetting {
 
 	init(data?: any) {
 		if (data) {
+			if(data.id) this.id = data.id;
             this.title = data.email;
 			this.description = data.password;
 		}
@@ -26,6 +28,7 @@ export class Setting implements ISetting {
 
 	toJSON(data?: any) {
 		data = typeof data === 'object' ? data : {}
+		if(this.id) data["Id"] = this.id;
         data["Title"] = this.title;
 		data["Description"] = this.description;
 		return data;
@@ -33,6 +36,7 @@ export class Setting implements ISetting {
 }
 
 export interface ISetting {
+	id?:string;
     title:string;
 	description:string;
 }
