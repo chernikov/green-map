@@ -74,7 +74,7 @@ export class AdminComponent implements OnInit {
 
           this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: res.result });
           this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user });
-          this._router.navigateByUrl('/admin/map-configs');
+          this._router.navigateByUrl('/admin/map');
         } else {
           this.formErrors = res.errors;
         }

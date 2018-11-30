@@ -8,7 +8,7 @@ import { MapConfigsComponent } from './map-configs/map-configs.component';
 import { SettingsComponent } from './settings/settings.component';
 
 const routes: Routes = [
-    { path: '', component: AdminComponent/* , canActivateChild: [IsAdminGuard] */,
+    { path: '', component: AdminComponent, canActivateChild: [IsAdminGuard],
         children: [
             { path: 'map', component: MapConfigsComponent },
             { path: 'settings', component: SettingsComponent }

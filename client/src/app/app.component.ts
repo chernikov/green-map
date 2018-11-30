@@ -47,35 +47,44 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.watchNotification();
     this.prebootData();
-    this.checkAuth();
+    this.getAuth();
   }
 
   prebootData() {
-    this._settingService.get().subscribe(data => {
+    /* this._settingService.get().subscribe(data => {
       this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
-    });
+    }); */
   }
 
   watchNotification() {
     this._notificationSubject.watch().subscribe(data => this._notificationsService.create(data.title, data.text, data.type));
   }
 
-  checkAuth() {
+  getAuth() {
     if(this.isBrowser) {
       let token = localStorage.getItem('authToken');
-
       if(token) {
-        if(!tokenHelper.isTokenExpired(token)) {
-            let decoded = tokenHelper.decodeToken(token);
-            let user = User.fromJS(JSON.parse(decoded.user));
-
-            this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: token });
-            this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user });
-        } else {
-          this._ngRedux.dispatch({ type: AuthTokenAction.remove });
-          this._ngRedux.dispatch({ type: AuthUserAction.remove });
-        }
+        this.checkAuth(token);
+        setInterval(() => {
+          if(tokenHelper.isTokenExpired(token)) {
+            this._ngRedux.dispatch({ type: AuthTokenAction.remove });
+            this._ngRedux.dispatch({ type: AuthUserAction.remove });
+          }
+        }, 1500);
       }
+    }
+  }
+
+  checkAuth(token:string) {
+    if(!tokenHelper.isTokenExpired(token)) {
+      let decoded = tokenHelper.decodeToken(token);
+      let user = User.fromJS(JSON.parse(decoded.user));
+
+      this._ngRedux.dispatch({ type: AuthTokenAction.save, payload: token });
+      this._ngRedux.dispatch({ type: AuthUserAction.save, payload: user });
+    } else {
+      this._ngRedux.dispatch({ type: AuthTokenAction.remove });
+      this._ngRedux.dispatch({ type: AuthUserAction.remove });
     }
   }
 }
