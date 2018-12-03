@@ -3,6 +3,7 @@ import { isPlatformBrowser } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NotificationsService } from 'angular2-notifications';
 import { NgRedux } from '@angular-redux/store';
+import { MetaService } from '@ngx-meta/core';
 
 import { IAppState } from '@store';
 
@@ -41,6 +42,7 @@ export class AppComponent implements OnInit {
     private _notificationSubject:NotificationSubject,
     private _notificationsService:NotificationsService,
     private _settingService:SettingService,
+    private _metaService:MetaService,
     @Inject(PLATFORM_ID) _platformId
   ) {
     this.isBrowser = isPlatformBrowser(_platformId);
@@ -54,6 +56,7 @@ export class AppComponent implements OnInit {
 
   prebootData() {
     this._settingService.get().subscribe(data => {
+      //this._metaService.setTitle(data);
       console.log(data);
       this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
     });

@@ -32,9 +32,7 @@ export class SettingService {
       let url:string = this.isServer ? (ProdApiUrl + this.apiUrl) : this.apiUrl;
       return this._http.get(url).pipe(map(res => res ? Setting.fromJS(res) : null));
     } else {
-      return Observable.create((observer:Observer<Setting>) => {
-        observer.next(settings);
-      });
+      return Observable.create((observer:Observer<Setting>) => observer.next(settings));
     }
 	}
 

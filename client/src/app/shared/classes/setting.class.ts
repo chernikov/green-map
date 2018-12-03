@@ -15,8 +15,8 @@ export class Setting implements ISetting {
 	init(data?: any) {
 		if (data) {
 			if(data.id) this.id = data.id;
-            this.title = data.email;
-			this.description = data.password;
+            this.title = data.title;
+			this.description = data.description;
 		}
 	}
 
