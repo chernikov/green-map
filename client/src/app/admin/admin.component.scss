@@ -1,0 +1,43 @@
+.page-wrap {
+    display: flex;
+    min-height: calc(100vh - 70px);
+    align-items: stretch;
+}
+
+.sidebar-wrap {
+    width: 13%;
+    border-top: 1px solid #292929;
+    background-color: #191919;
+}
+
+.content {
+    width: 87%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.login-wrap {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-form {
+    width: 100%;
+    max-width: 500px;
+    padding: 30px;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(0,0,0,.22);
+    border-radius: 4px;
+}
+
+.buttons-wrap {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    .button {
+        width: 47%;
+    }
+}

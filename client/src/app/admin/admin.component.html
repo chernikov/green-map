@@ -1,0 +1,42 @@
+<ng-container *ngIf="authUser && authUser.role.code === 'admin'; else adminLogin">
+  <app-admin-header></app-admin-header>
+  <div class="page-wrap">
+      <div class="sidebar-wrap">
+          <app-admin-sidebar></app-admin-sidebar>
+      </div>
+      <div class="content">
+          <router-outlet></router-outlet>
+      </div>
+  </div>
+</ng-container>
+
+<ng-template #adminLogin>
+  <div class="login-wrap">
+      <div class="login-form">
+          <form [formGroup]="form" novalidate>
+              <div class="login-errors" *ngFor="let error of formErrors">
+                  <div class="input-error">{{ error }}</div>
+              </div>
+              <div class="input-wrap">
+                  <div class="input-title">
+                  <label for="email">Email<span>*</span></label>
+                  </div>
+                  <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
+                  <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div>
+                  <input id="email" type="email" formControlName="email">
+              </div>
+              <div class="input-wrap">
+                  <div class="input-title">
+                  <label for="password">Password<span>*</span></label>
+                  </div>
+                  <div class="input-error" *ngIf="form.get('password').hasError('required') && form.get('password').touched">Password is required field.</div>
+                  <input id="password" type="password" formControlName="password">
+              </div>
+              <div class="buttons-wrap">
+                  <button class="button primary" (click)="onLogin()">Log in</button>
+                  <button class="button cancel" (click)="onCancel()">Cancel</button>
+              </div>
+          </form>
+      </div>
+  </div>
+</ng-template>

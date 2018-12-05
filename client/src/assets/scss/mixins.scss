@@ -1,0 +1,123 @@
+@import '~assets/scss/variables.scss';
+
+@mixin text-overflow() {
+	white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+// =============================================================================
+// Placeholder
+// =============================================================================
+
+@mixin placeholder {
+	&.placeholder { @content; }
+	&:-moz-placeholder { @content; }
+	&::-moz-placeholder { @content; }
+	&::-webkit-input-placeholder { @content; }
+}
+
+// =============================================================================
+// Clearfix
+// =============================================================================
+@mixin clearfix() {
+	*zoom: 1;
+	&:before,
+	&:after {
+		content: " ";
+		display: table;
+	}
+	&:after {
+		clear: both;
+	}
+}
+
+// =============================================================================
+// Font Face
+// =============================================================================
+@mixin font-face($font-family, $font-filename, $font-weight: normal, $font-style :normal, $font-stretch: normal) {
+	@font-face {
+		font-family: '#{$font-family}';
+		src: url('#{$font-filename}.eot');
+		src: url('#{$font-filename}.eot?#iefix') format('embedded-opentype'),
+		url('#{$font-filename}.woff') format('woff'),
+		url('#{$font-filename}.ttf') format('truetype'),
+		url('#{$font-filename}.svg##{$font-family}') format('svg');
+		font-weight: $font-weight;
+		font-style: $font-style;
+		font-stretch: $font-stretch;
+	}
+}
+
+// =============================================================================
+// Media queries
+// =============================================================================
+@mixin media-sm {
+	@media only screen and (min-width: $screen-sm) {
+		@content;
+	}
+}
+
+@mixin media-md {
+	@media only screen and (min-width: $screen-md) {
+		@content;
+	}
+}
+
+@mixin media-lg {
+	@media only screen and (min-width: $screen-lg) {
+		@content;
+	}
+}
+
+@mixin media-xl {
+	@media only screen and (min-width: $screen-xl) {
+		@content;
+	}
+}
+
+// =============================================================================
+// Transition
+// =============================================================================
+@mixin transition($transitions...) {
+	-webkit-transition: $transitions;
+	-moz-transition: $transitions;
+	-ms-transition: $transitions;
+	-o-transition: $transitions;
+	transition: $transitions;
+}
+
+// =============================================================================
+// CSS3 Keyframes
+// =============================================================================
+@mixin keyframes($name) {
+	@-webkit-keyframes #{$name} {
+		@content;
+	}
+	@-moz-keyframes #{$name} {
+		@content;
+	}
+	@keyframes #{$name} {
+		@content;
+	}
+}
+
+// =============================================================================
+// Transforms
+// =============================================================================
+@mixin transform($transforms...) {
+	-moz-transform: $transforms;
+	-o-transform: $transforms;
+	-ms-transform: $transforms;
+	-webkit-transform: $transforms;
+	transform: $transforms;
+}
+
+// =============================================================================
+// Box sizing
+// =============================================================================
+@mixin box-sizing($box-model) {
+	-webkit-box-sizing: $box-model;
+	-moz-box-sizing: $box-model;
+	box-sizing: $box-model;
+}

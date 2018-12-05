@@ -1,0 +1,19 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 13%;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 27px;
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 16px;
+    text-align: center;
+}

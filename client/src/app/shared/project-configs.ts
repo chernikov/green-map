@@ -1,0 +1,1 @@
+export const ProdApiUrl:string = "http://server";
