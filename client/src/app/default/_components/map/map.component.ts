@@ -59,11 +59,11 @@ export class MapComponent implements OnInit {
   watchMapEvents() {
     if(this.isBrowser && this.map) {
       google.maps.event.addListener(this.map, 'zoom_changed', () => {
-        this._router.navigate(['/'], { queryParams: { zoom: this.map.getZoom(), lat: this.mapParams['lat'], lng: this.mapParams['lng'] }});
+        this._router.navigate([window.location.pathname], { queryParams: { zoom: this.map.getZoom(), lat: this.mapParams['lat'], lng: this.mapParams['lng'] }});
       });
 
       google.maps.event.addListener(this.map, 'dragend', () => {
-        this._router.navigate(['/'], { queryParams: { zoom: this.mapParams['zoom'], lat: this.map.getCenter().lat(), lng: this.map.getCenter().lng() }});
+        this._router.navigate([window.location.pathname], { queryParams: { zoom: this.mapParams['zoom'], lat: this.map.getCenter().lat(), lng: this.map.getCenter().lng() }});
       });
     }
   }
