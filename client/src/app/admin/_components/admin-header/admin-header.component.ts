@@ -8,23 +8,33 @@ import { IAppState } from '@store';
 import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 
+import { Map } from '@classes/map.class';
+
 @Component({
   selector: 'app-admin-header',
   templateUrl: './admin-header.component.html',
   styleUrls: ['./admin-header.component.scss']
 })
+
 export class AdminHeaderComponent implements OnInit {
+  mapData:Map;
 
   constructor(
-    private router:Router,
-    private ngRedux: NgRedux<IAppState>,
+    private _router:Router,
+    private _ngRedux:NgRedux<IAppState>,
   ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.getQueryParams();
+  }
+
+  getQueryParams() {
+    this.mapData = this._ngRedux.getState().map;
+  }
 
   onLogout() {
-    this.ngRedux.dispatch({ type: AuthTokenAction.remove });
-    this.ngRedux.dispatch({ type: AuthUserAction.remove });
-    this.router.navigateByUrl('');
+    this._ngRedux.dispatch({ type: AuthTokenAction.remove });
+    this._ngRedux.dispatch({ type: AuthUserAction.remove });
+    this._router.navigate(['/'], { queryParams: { zoom: this.mapData.zoom, lat: this.mapData.position.lat, lng: this.mapData.position.lng } });
   }
 }
