@@ -4,14 +4,14 @@ import { Routes, RouterModule } from '@angular/router';
 import { IsAdminGuard } from '@guards/is-admin.guard';
 
 import { AdminComponent } from './admin.component';
-import { MapConfigsComponent } from './map-configs/map-configs.component';
-import { SettingsComponent } from './settings/settings.component';
+import { AdminMapComponent } from './admin-map/admin-map.component';
+import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
 
 const routes: Routes = [
     { path: '', component: AdminComponent, canActivateChild: [IsAdminGuard],
         children: [
-            { path: 'map', component: MapConfigsComponent },
-            { path: 'settings', component: SettingsComponent }
+            { path: 'map', component: AdminMapComponent },
+            { path: 'settings', component: AdminSettingsComponent }
         ]
     },
     { path: '**', redirectTo: '' }

@@ -1,31 +1,40 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { NotificationType } from 'angular2-notifications';
 
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
-import { MapConfigAction } from '@global-reducers/map.reducer';
+import { MapAction } from '@global-reducers/map.reducer';
 
-import { MapShape } from '@classes/map-shape.class';
-import { MapData } from '@classes/map-data.class';
 import { Coordinate } from '@classes/coordinate.class';
-import { MapConfig } from '@classes/map-config.class';
+import { Map } from '@classes/map.class';
 import { AppNotification } from '@classes/app-notification.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
 
-import { MapConfigService } from '@services/map.service';
-
 @Component({
-  selector: 'app-map-configs',
-  templateUrl: './map-configs.component.html',
-  styleUrls: ['./map-configs.component.scss']
+  selector: 'app-admin-map',
+  templateUrl: './admin-map.component.html',
+  styleUrls: ['./admin-map.component.scss']
 })
-
-export class MapConfigsComponent implements OnInit {
+export class AdminMapComponent implements OnInit {
   @ViewChild('mapElement') mapElement:ElementRef;
-  mapConfigs:MapConfig;
   map:google.maps.Map;
+  mapData:Map;
+
+  form:FormGroup;
+
+
+
+
+
+
+
+
+
+
+  
   mapDraw:google.maps.drawing.DrawingManager;
   selectedMapShape:any;
   allPolygons:any[];
@@ -34,9 +43,9 @@ export class MapConfigsComponent implements OnInit {
   newMapPosition:Coordinate;
 
   constructor(
-    private ngRedux:NgRedux<IAppState>,
-    private mapConfigService:MapConfigService,
-    private notificationSubject:NotificationSubject
+    private _ngRedux:NgRedux<IAppState>,
+    private _formBuilder:FormBuilder,
+    private _notificationSubject:NotificationSubject
   ) {
     this.isInProgress = false;
     this.allPolygons = [];
@@ -52,18 +61,31 @@ export class MapConfigsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMapConfigs();
+    this.getMapData();
+    this.buildForm();
   }
 
-  getMapConfigs() {
-    this.mapConfigs = { ...this.ngRedux.getState().mapConfig } as MapConfig;
+  buildForm() {
+    this.form = this._formBuilder.group({
+      zoom: ['', Validators.required],
+      lat: ['', Validators.required],
+      lng: ['', Validators.required]
+    });
+
+    this.patchMapForm();
+    this.watchForm();
+  }
+
+  getMapData() {
+    this.mapData = { ...this._ngRedux.getState().map } as Map;
     this.buildMap();
+    this.patchMapForm();
   }
 
   buildMap() {
-/*     const mapProp = {
-      center: new google.maps.LatLng(this.mapConfigs.position.lat, this.mapConfigs.position.lng),
-      zoom: this.mapConfigs.zoom,
+    const mapProp = {
+      center: new google.maps.LatLng(this.mapData.position.lat, this.mapData.position.lng),
+      zoom: this.mapData.zoom,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: true,
       fullscreenControl: true,
@@ -72,10 +94,20 @@ export class MapConfigsComponent implements OnInit {
     };
 
     this.map = new google.maps.Map(this.mapElement.nativeElement, mapProp);
-  
-    this.addMapDraw();
     this.watchMapEvents();
+  
+/*     this.addMapDraw();
     this.patchMap(); */
+  }
+
+  patchMapForm() {
+    if(this.form && this.mapData) {
+      this.form.patchValue({
+        zoom: this.mapData.zoom,
+        lat: Number((this.mapData.position.lat).toFixed(5)),
+        lng: Number((this.mapData.position.lng).toFixed(5))
+      });
+    }
   }
 
   addMapDraw() {
@@ -93,6 +125,23 @@ export class MapConfigsComponent implements OnInit {
     });
 
     this.mapDraw.setMap(this.map); */
+  }
+
+  watchForm() {
+    this.form.valueChanges.subscribe(data => {
+
+      if(data.zoom != this.mapData.zoom && data.zoom) {
+        this.mapData.zoom = parseInt(data.zoom);
+        this.map.setZoom(this.mapData.zoom);
+      }
+
+      if(data.lat != this.mapData.position.lat || data.lng != this.mapData.position.lng) {
+        console.log('update');
+        this.mapData.position.lat = Number(data.lat);
+        this.mapData.position.lng = Number(data.lng);
+        this.map.setCenter(new google.maps.LatLng(this.mapData.position.lat, this.mapData.position.lng));
+      }
+    });
   }
 
   watchMapEvents() {
@@ -139,6 +188,30 @@ export class MapConfigsComponent implements OnInit {
     });
 
     google.maps.event.addListener(this.map, 'zoom_changed', () => this.mapConfigs.zoom = this.map.getZoom()); */
+
+    google.maps.event.addListener(this.map, 'dragend', () => {
+      this.mapData.position = new Coordinate({
+        lat: Number((this.map.getCenter().lat()).toFixed(5)),
+        lng: Number((this.map.getCenter().lng()).toFixed(5))
+      });
+
+      if(this.form) {
+        this.form.patchValue({
+          lat: this.mapData.position.lat,
+          lng: this.mapData.position.lng
+        });
+      }
+    });
+
+    google.maps.event.addListener(this.map, 'zoom_changed', () => {
+      this.mapData.zoom = this.map.getZoom()
+    
+      if(this.form) {
+        this.form.patchValue({
+          zoom: this.mapData.zoom
+        });
+      }
+    });
   }
 
   patchMap() {
@@ -203,12 +276,28 @@ export class MapConfigsComponent implements OnInit {
     this.selectedMapShape = shape; */
   }
 
+  onMapUpdate() {
+
+  }
+
+  onMapReset() {
+    this.mapData = { ...this._ngRedux.getState().map } as Map;
+    this.patchMapForm();
+    console.log('on map reset');
+    this.map.setZoom(Number(this.mapData.zoom));
+    this.map.setCenter(new google.maps.LatLng(Number(this.mapData.position.lat), Number(this.mapData.position.lng)));
+  }
+
   onDeleteSelectedShape() {
 /*     if(this.selectedMapShape) {
       this.allPolygons = this.allPolygons.filter(p => p.id != this.selectedMapShape.id);
       this.selectedMapShape.setMap(null);
       this.selectedMapShape = null;
     } */
+  }
+
+  onCancel() {
+    
   }
 
   onUpdate() {
@@ -232,7 +321,7 @@ export class MapConfigsComponent implements OnInit {
     }); */
   }
 
-  onCancel() {
+/*   onCancel() {
     this.getMapConfigs();
-  }
+  } */
 }

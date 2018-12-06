@@ -1,0 +1,45 @@
+<div class="controls">
+  <form [formGroup]="form" novalidate (keydown.enter)="$event.preventDefault()">
+    <div class="input-wrap">
+        <div class="input-title">
+          <label for="zoom">Zoom<span>*</span></label>
+        </div>
+  <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
+        <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
+        <input id="zoom" type="number" formControlName="zoom" autocomplete="off" min="1" max="22">
+    </div>
+    <div class="input-wrap">
+        <div class="input-title">
+          <label for="lat">Lat<span>*</span></label>
+        </div>
+  <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
+        <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
+        <input id="lat" type="number" formControlName="lat" step="0.00001" autocomplete="off">
+    </div>
+    <div class="input-wrap">
+        <div class="input-title">
+          <label for="lng">Lng<span>*</span></label>
+        </div>
+  <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
+        <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
+        <input id="lng" type="number" formControlName="lng" step="0.00001" autocomplete="off">
+    </div>
+    <div class="control-buttons">
+      <!-- <button class="button primary" (click)="onMapUpdate()" [class.is-disabled]="isInProgress" [disabled]="isInProgress">Update map view</button> -->
+      <button class="button cancel" (click)="onMapReset()">Reset map view</button>
+    </div>
+  </form>
+
+
+
+
+
+<!--   <div class="delete" [class.is-disabled]="!selectedMapShape" (click)="onDeleteSelectedShape()"><i class="fal fa-trash-alt"></i> Delete selected shape</div> -->
+</div>
+
+<div #mapElement class="map"></div>
+
+<div class="buttons-wrap">
+  <button class="button primary" (click)="onUpdate()" [class.is-disabled]="isInProgress" [disabled]="isInProgress">Update</button>
+  <button class="button cancel" (click)="onCancel()">Cancel</button>
+</div>

@@ -1,14 +1,14 @@
-import { MapConfig } from "@classes/map-config.class";
+import { Map } from "@classes/map.class";
 
-export const MapConfigInitialState:MapConfig = null;
+export const MapInitialState:Map = null;
 
-export const MapConfigAction = {
-    update: 'UPDATE_MAP_CONFIG'
+export const MapAction = {
+    update: 'UPDATE_MAP'
 }
 
-export const MapConfigReducer = (state = MapConfigInitialState, action:{type:string, payload:MapConfig}):MapConfig => {
+export const MapReducer = (state = MapInitialState, action:{type:string, payload:Map}):Map => {
     switch(action.type) {
-        case MapConfigAction.update:
+        case MapAction.update:
             return state = action.payload;
         default:
             return state;

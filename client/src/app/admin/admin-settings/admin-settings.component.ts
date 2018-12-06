@@ -17,12 +17,12 @@ import { SettingService } from '@services/setting.service';
 import { NotificationSubject } from '@subjects/notification.subject';
 
 @Component({
-  selector: 'app-settings',
-  templateUrl: './settings.component.html',
-  styleUrls: ['./settings.component.scss']
+  selector: 'app-admin-settings',
+  templateUrl: './admin-settings.component.html',
+  styleUrls: ['./admin-settings.component.scss']
 })
 
-export class SettingsComponent implements OnInit {
+export class AdminSettingsComponent implements OnInit {
   form:FormGroup;
   isInProgress:boolean;
   setting:Setting;
@@ -64,6 +64,7 @@ export class SettingsComponent implements OnInit {
 
   onUpdate() {
     let data = new Setting();
+    if(this.setting && this.setting.id) data.id = this.setting.id;
     data.title = this.form.value.title;
     data.description = this.form.value.description;
 

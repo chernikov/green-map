@@ -1,13 +1,11 @@
 import { Coordinate } from '@classes/coordinate.class';
-import { MapData } from './map-data.class';
 
-export class MapConfig implements IMapConfig {
+export class Map implements IMap {
 	id?:string;
 	position:Coordinate;
 	zoom:number;
-	data?:MapData;
 
-	constructor(data?: IMapConfig) {
+	constructor(data?: IMap) {
 		if (data) {
 			for (var property in data)
 				if (data.hasOwnProperty(property)) {
@@ -21,12 +19,11 @@ export class MapConfig implements IMapConfig {
 			this.id = data.id;
 			this.position = data.position ? Coordinate.fromJS(data.position) : <any>undefined;
 			this.zoom = data.zoom;
-			this.data = data.data ? MapData.fromJS(data.data) : <any>undefined;
 		}
 	}
 
-	static fromJS(data: any):MapConfig {
-		let result = new MapConfig;
+	static fromJS(data: any):Map {
+		let result = new Map;
 		result.init(data);
 		return result;
 	}
@@ -36,14 +33,12 @@ export class MapConfig implements IMapConfig {
 		data["Id"] = this.id;
 		data["Position"] = this.position ? new Coordinate().toJSON(this.position) : <any>undefined;
 		data["Zoom"] = this.zoom;
-		data["Data"] = this.data ? new MapData().toJSON(this.position) : <any>undefined;
 		return data;
 	}
 }
 
-export interface IMapConfig  {
+export interface IMap  {
 	id?:string;
 	position:Coordinate;
 	zoom:number;
-	data?:MapData;
 }

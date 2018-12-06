@@ -7,27 +7,27 @@ using MongoDB.Driver;
 using green_map.Models;
 
 namespace green_map.Api {
-    [Route("api/settings")]
-    public class SettingApi : BaseApi {
+    [Route("api/map")]
+    public class MapApi : BaseApi {
         private readonly IMongoDatabase _db = null;
 
-        public SettingApi(IOptions<ServerConfiguration> settings, IConfiguration config) : base(settings, config) {
+        public MapApi(IOptions<ServerConfiguration> settings, IConfiguration config) : base(settings, config) {
             _db = base.GetMongoDB();
         }
 
         [HttpGet]
-        public Setting Get() {
-            return _db.GetCollection<Setting>("Setting").Find(_ => true).FirstOrDefault();
+        public Map Get() {
+            return _db.GetCollection<Map>("Map").Find(_ => true).FirstOrDefault();
         }
 
-        [Authorize(Roles = "admin")]
+/*         [Authorize(Roles = "admin")]
         [HttpPost]
-        public SettingResponse Post([FromBody]Setting value) {
+        public MapConfigResponse Post([FromBody]MapConfig value) {
             var errors = new List<string>();
-            var response = new SettingResponse();
+            var response = new MapConfigResponse();
 
             if(ModelState.IsValid) {
-                var collection = _db.GetCollection<Setting>("Setting");
+                var collection = _db.GetCollection<MapConfig>("MapConfig");
                 var items = collection.Find(_ => true).ToList();
 
                 if(items.Count < 1 && value.Id == null) {
@@ -35,7 +35,6 @@ namespace green_map.Api {
                 } else {
                     collection.ReplaceOneAsync(c => c.Id == value.Id, value);
                 }
-                
                 response.Result = value;
             } else {
                 foreach(var item in ModelState) {
@@ -56,6 +55,6 @@ namespace green_map.Api {
             }
 
             return response;
-        }
+        } */
     }
 }

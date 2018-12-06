@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MapConfigsComponent } from './map-configs.component';
+import { AdminSettingsComponent } from './admin-settings.component';
 
-describe('MapConfigsComponent', () => {
-  let component: MapConfigsComponent;
-  let fixture: ComponentFixture<MapConfigsComponent>;
+describe('AdminSettingsComponent', () => {
+  let component: AdminSettingsComponent;
+  let fixture: ComponentFixture<AdminSettingsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ MapConfigsComponent ]
+      declarations: [ AdminSettingsComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(MapConfigsComponent);
+    fixture = TestBed.createComponent(AdminSettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
