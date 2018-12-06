@@ -13,6 +13,9 @@ import { AppNotification } from '@classes/app-notification.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
 
+import { MapService } from '@services/map.service';
+import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
+
 @Component({
   selector: 'app-admin-map',
   templateUrl: './admin-map.component.html',
@@ -45,6 +48,7 @@ export class AdminMapComponent implements OnInit {
   constructor(
     private _ngRedux:NgRedux<IAppState>,
     private _formBuilder:FormBuilder,
+    private _mapService:MapService,
     private _notificationSubject:NotificationSubject
   ) {
     this.isInProgress = false;
@@ -286,6 +290,20 @@ export class AdminMapComponent implements OnInit {
     console.log('on map reset');
     this.map.setZoom(Number(this.mapData.zoom));
     this.map.setCenter(new google.maps.LatLng(Number(this.mapData.position.lat), Number(this.mapData.position.lng)));
+  }
+
+  onUpdateMap() {
+    this._mapService.save(this.mapData).subscribe(res => {
+      if(res.isSuccess) this._ngRedux.dispatch({ type: MapAction.update, payload: res.result } as MapDispatch);
+
+      let notification = new AppNotification({
+        type: res.isSuccess ? NotificationType.Success : NotificationType.Error,
+        title: res.isSuccess ? 'Success' : 'Error',
+        text: res.isSuccess ? 'Settings updated' : 'Please try later'
+      });
+
+      this._notificationSubject.create(notification);
+    });
   }
 
   onDeleteSelectedShape() {

@@ -25,7 +25,12 @@ a {
     padding-left: 15px;
     padding-right: 15px;
     box-sizing: border-box;
-  }
+}
+
+.page-wrapper {
+    box-sizing: border-box;
+    padding: 13%;
+}
 
 .preloader-icon {
     width: 50px;

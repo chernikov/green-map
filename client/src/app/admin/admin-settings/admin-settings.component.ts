@@ -69,9 +69,7 @@ export class AdminSettingsComponent implements OnInit {
     data.description = this.form.value.description;
 
     this._settingService.save(data).subscribe(res => {
-      if(res.isSuccess) {
-        this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
-      }
+      if(res.isSuccess) this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
 
       let notification = new AppNotification({
         type: res.isSuccess ? NotificationType.Success : NotificationType.Error,

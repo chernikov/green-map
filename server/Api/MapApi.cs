@@ -20,14 +20,14 @@ namespace green_map.Api {
             return _db.GetCollection<Map>("Map").Find(_ => true).FirstOrDefault();
         }
 
-/*         [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public MapConfigResponse Post([FromBody]MapConfig value) {
+        public MapResponse Post([FromBody]Map value) {
             var errors = new List<string>();
-            var response = new MapConfigResponse();
+            var response = new MapResponse();
 
             if(ModelState.IsValid) {
-                var collection = _db.GetCollection<MapConfig>("MapConfig");
+                var collection = _db.GetCollection<Map>("Map");
                 var items = collection.Find(_ => true).ToList();
 
                 if(items.Count < 1 && value.Id == null) {
@@ -55,6 +55,6 @@ namespace green_map.Api {
             }
 
             return response;
-        } */
+        }
     }
 }
