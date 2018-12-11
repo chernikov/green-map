@@ -7,7 +7,6 @@
     form {
         display: flex;
         align-items: flex-end;
-        //flex-direction: column;
     }
     .input-wrap {
         padding-left: 7px;
@@ -15,22 +14,6 @@
         width: 20%;
         margin-bottom: 0;
     }
-/*     .delete {
-        font-size: 14px;
-        cursor: pointer;
-        @include transition(all .2s ease-in-out);
-        i {
-            margin-right: 2px;
-        }
-        &:hover {
-            color: $red;
-        }
-        &.is-disabled {
-            opacity: .35;
-            color: $black !important;
-            cursor: default;
-        }
-    } */
     .control-buttons {
         display: flex;
         width: 20%;
@@ -45,6 +28,14 @@
 
 .map {
     height: 600px;
+}
+
+.shape-form {
+    margin-top: 40px;
+    h2 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
 }
 
 .buttons-wrap {

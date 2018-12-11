@@ -125,6 +125,9 @@ input {
         &:focus {
             border-color: $primary;
         }
+        &.error {
+            border-color: $error;
+        }
     }
     textarea {
         min-height: 105px;
@@ -146,6 +149,7 @@ button {
         cursor: pointer;
         border-radius: 3px;
         overflow: hidden;
+        background-color: #ddd;
         &:after {
             content: '';
             position: absolute;
@@ -170,9 +174,17 @@ button {
         span {
             position: relative;
             z-index: 10;
+            color: $black;
         }
         &.primary {
             background-color: $primary;
+            span {
+                color: #fff;
+                @include transition(transform .4s ease-out);
+            }
+        }
+        &.cancel {
+            background-color: $red;
             span {
                 color: #fff;
                 @include transition(transform .4s ease-out);
@@ -197,10 +209,10 @@ button {
             }
         }
         &.is-disabled {
-            background-color: #ddd !important;
+            background-color: #ebebeb !important;
             cursor: default !important;
             span {
-                color: $black;
+                color: #909090;
             }
             &:after {
                 display: none !important;

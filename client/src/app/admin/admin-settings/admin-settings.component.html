@@ -16,7 +16,7 @@
     </div>
   </div>
   <div class="buttons-wrap">
-    <button class="button primary" (click)="onUpdate()" [class.is-disabled]="form.invalid || isInProgress" [disabled]="form.invalid || isInProgress">Update</button>
-    <button class="button cancel" (click)="onCancel()">Cancel</button>
+    <button class="button primary" (click)="onUpdate()" [class.is-disabled]="form.invalid || isInProgress" [disabled]="form.invalid || isInProgress"><span>Update</span></button>
+    <button class="button cancel" (click)="onCancel()"><span>Cancel</span></button>
   </div>
 </form>

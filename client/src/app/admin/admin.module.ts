@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { QuillModule } from 'ngx-quill';
+
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { AdminComponent } from './admin.component';
@@ -14,7 +16,8 @@ import { AdminSettingsComponent } from './admin-settings/admin-settings.componen
     imports: [
         AdminRoutingModule,
         CommonModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        QuillModule
     ],
     declarations: [
         AdminComponent,
