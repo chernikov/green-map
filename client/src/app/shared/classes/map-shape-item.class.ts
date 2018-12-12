@@ -4,7 +4,8 @@ export class MapShapeItem implements IMapShapeItem {
 	id?:string;
 	title:string;
 	description:string;
-    coordinates:Coordinate[];
+	coordinates:Coordinate[];
+	images:string[];
 
 	constructor(data?: IMapShapeItem) {
 		if (data) {
@@ -22,6 +23,7 @@ export class MapShapeItem implements IMapShapeItem {
 			this.description = data.description;
             this.coordinates = [];
 			for(let item of data.coordinates) this.coordinates.push(Coordinate.fromJS(item));
+			this.images = data.images;
 		}
 	}
 
@@ -38,6 +40,8 @@ export class MapShapeItem implements IMapShapeItem {
 		data["Description"] = this.description;
         data["Coordinates"] = [];
 		for(let item of this.coordinates) data["Coordinates"].push(item.toJSON());
+		data["Images"] = [];
+		for(let item of this.images) data["Images"].push(item);
 		return data;
 	}
 }
@@ -46,5 +50,6 @@ export interface IMapShapeItem {
 	id?:string;
 	title:string;
 	description:string;
-    coordinates:Coordinate[];
+	coordinates:Coordinate[];
+	images:string[];
 }

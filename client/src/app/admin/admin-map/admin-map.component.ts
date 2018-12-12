@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { NotificationType } from 'angular2-notifications';
 
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
 import { MapAction } from '@global-reducers/map.reducer';
+import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 
 import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
 import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
@@ -19,7 +20,7 @@ import { NotificationSubject } from '@subjects/notification.subject';
 
 import { MapService } from '@services/map.service';
 import { MapShapeService } from '@services/map-shape.service';
-import { MapShapeAction } from '@global-reducers/map-shape.reducer';
+import { ShapeImageUploadService } from '@services/shape-image-upload.service';
 
 @Component({
   selector: 'app-admin-map',
@@ -40,26 +41,14 @@ export class AdminMapComponent implements OnInit {
   polygonDefaultSetup:any;
   mapShapes:MapShapeItem[];
 
-
-
-
-
-
-  
-  
-  
-  
-  
-  isInProgress:boolean;
-
   constructor(
     private _ngRedux:NgRedux<IAppState>,
     private _formBuilder:FormBuilder,
     private _mapService:MapService,
     private _mapShapeService:MapShapeService,
+    private _shapeImageUploadService:ShapeImageUploadService,
     private _notificationSubject:NotificationSubject
   ) {
-    this.isInProgress = false;
     this.allShapes = [];
     this.polygonDefaultSetup = {
       strokeColor: '#0a3c03',
@@ -82,10 +71,9 @@ export class AdminMapComponent implements OnInit {
   buildShapeForm() {
     this.shapeForm = this._formBuilder.group({
       title: ['', Validators.required],
-      description: ['', Validators.required]
+      description: ['', Validators.required],
+      images: this._formBuilder.array([])
     });
-
-    this.watchShapeForm();
   }
 
   buildForm() {
@@ -144,6 +132,10 @@ export class AdminMapComponent implements OnInit {
         title: this.selectedMapShape.title,
         description: this.selectedMapShape.description
       });
+
+      this.shapeForm.setControl('images', this._formBuilder.array(this.selectedMapShape.images || []));
+
+      this.watchShapeForm();
     }
   }
 
@@ -185,6 +177,7 @@ export class AdminMapComponent implements OnInit {
       if(this.selectedMapShape) {
         this.selectedMapShape.title = data.title;
         this.selectedMapShape.description = data.description;
+        //this.selectedMapShape.images = data.images;
       }
     });
   }
@@ -266,6 +259,7 @@ export class AdminMapComponent implements OnInit {
         item.set('id', (this.mapShapes[i].id.length > 20 ? this.mapShapes[i].id : (new Date().valueOf()) + i));
         item.set('title', this.mapShapes[i].title);
         item.set('description', this.mapShapes[i].description);
+        item.set('images', this.mapShapes[i].images)
         this.allShapes.push(item);
 
         google.maps.event.addListener(item, 'click', (e) => {
@@ -291,7 +285,8 @@ export class AdminMapComponent implements OnInit {
       id: this.selectedMapShape.id.length > 20 ? this.selectedMapShape.id : null,
       title: this.selectedMapShape.title,
       description: this.selectedMapShape.description,
-      coordinates: polygonCoordinates
+      coordinates: polygonCoordinates,
+      images: this.shapeForm.value.images
     })
 
     return data;
@@ -315,11 +310,23 @@ export class AdminMapComponent implements OnInit {
     this.patchShapeForm();
   }
 
+  onSelectImages(event) {
+    let files = event.srcElement.files;
+    let images = <FormArray>this.shapeForm.controls['images'];
+
+    for(let file of files) images.push(new FormControl(file));
+  }
+
   onMapReset() {
     this.mapData = { ...this._ngRedux.getState().map } as Map;
     this.patchMapForm();
     this.map.setZoom(Number(this.mapData.zoom));
     this.map.setCenter(new google.maps.LatLng(Number(this.mapData.position.lat), Number(this.mapData.position.lng)));
+  }
+
+  onDeleteShapeImage(index:number) {
+    let images = <FormArray>this.shapeForm.controls['images'];
+    images.removeAt(index);
   }
 
   onUpdateMap() {
@@ -346,6 +353,32 @@ export class AdminMapComponent implements OnInit {
 
   onUpdateShape() {
     let data = this.collectShapeData();
+
+    if(data.images && data.images.length) {
+      let needSaveImages = [];
+
+      for(let image of data.images) {
+        if(<any>image instanceof File) needSaveImages.push(image);
+      }
+
+      this._shapeImageUploadService.upload(needSaveImages).subscribe(res => {
+        if(res.isSuccess) {
+          let count = 0;
+          for(let i = 0; i < data.images.length; i++) {
+            if(<any>data.images[i] instanceof File) {
+              data.images[i] = res.result[count];
+              count++;
+            }
+          }
+        }
+        this.saveShape(data);
+      });
+    } else {
+      this.saveShape(data);
+    }
+  }
+
+  saveShape(data:MapShapeItem) {
     this._mapShapeService.update(data).subscribe(res => {
       if(res.isSuccess) this._ngRedux.dispatch({ type: MapShapeAction.update, payload: [res.result] } as MapShapeDispatch);
 
@@ -380,6 +413,8 @@ export class AdminMapComponent implements OnInit {
     let data = this.mapShapes.find(i => i.id === this.selectedMapShape.id);
     this.selectedMapShape.setPaths(data.coordinates);
     this.selectedMapShape.set('title', data.title);
+    this.selectedMapShape.set('description', data.description);
+    this.selectedMapShape.set('images', data.images);
     this.patchShapeForm();
   }
 }

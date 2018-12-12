@@ -49,10 +49,30 @@
       </div>
       <quill-editor id="description" formControlName="description" [style]="{'height':'320px'}"></quill-editor>
     </div>
+    <div class="images-block">
+      <h3>Фото<button class="button primary" (click)="imagesUploadInput.click()"><span>Загрузити</span></button></h3>
+      <div class="images-wrap" *ngIf="shapeForm['controls'].images['controls'] && shapeForm['controls'].images['controls'].length; else NoImages">
+        <div class="image-wrap" *ngFor="let image of shapeForm['controls'].images['controls']; index as i">
+          <div class="image" [style.background-image]="'url(' + (image.value | imageUploadPreview | async) + ')'">
+            <button class="button cancel" (click)="onDeleteShapeImage(i)"><span>Видалити</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="buttons-wrap">
-      <button class="button primary" (click)="onUpdateShape()" [class.is-disabled]="shapeForm.invalid" [disabled]="shapeForm.invalid"><span>Update</span></button>
-      <button class="button cancel" (click)="onDeleteShape()"><span>Delete</span></button>
-      <button class="button" (click)="onResetShape()"><span>Reset</span></button>
+      <button class="button primary" (click)="onUpdateShape()" [class.is-disabled]="shapeForm.invalid" [disabled]="shapeForm.invalid"><span>Обновити</span></button>
+      <button class="button cancel" (click)="onDeleteShape()"><span>Видалити</span></button>
+      <button class="button" (click)="onResetShape()"><span>Відновити</span></button>
     </div>
   </form>
 </div>
+
+<div class="file-upload">
+  <input type="file" #imagesUploadInput (change)="onSelectImages($event)" multiple accept="image/png, image/jpeg, image/jpg">
+</div>
+
+<ng-template #NoImages>
+  <div class="no-images">
+    Немає загружених картинок
+  </div>
+</ng-template>

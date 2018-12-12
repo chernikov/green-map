@@ -30,10 +30,20 @@ namespace green_map.Api {
                 var collection = _db.GetCollection<MapShapeItem>("MapShape");
                 var item = collection.Find(i => i.Id == value.Id).FirstOrDefault();
 
-
                 if(item == null) {
                     collection.InsertOne(value);
                 } else {
+                    if(item.Images != null) {
+                        foreach(var image in item.Images) {
+                            var exist = value.Images.Find(i => i == image);
+                            if(exist == null) {
+                                if((System.IO.File.Exists(image))) {
+                                    System.IO.File.Delete(image);
+                                }
+                            }
+                        }
+                    }
+
                     collection.ReplaceOneAsync(c => c.Id == value.Id, value);
                 }
                 response.Result = value;
@@ -62,7 +72,16 @@ namespace green_map.Api {
         public MapShapeItemResponse Delete(string id) {
             var response = new MapShapeItemResponse();
 
+            var item = _db.GetCollection<MapShapeItem>("MapShape").Find(i => i.Id == id).FirstOrDefault();
             _db.GetCollection<MapShapeItem>("MapShape").DeleteOne(i => i.Id == id);
+
+            if(item != null && item.Images != null && item.Images.Count > 0) {
+                foreach(var image in item.Images) {
+                    if((System.IO.File.Exists(image))) {
+                        System.IO.File.Delete(image);
+                    }
+                }
+            }
 
             response.Errors = null;
             response.IsSuccess = true;

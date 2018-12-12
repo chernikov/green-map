@@ -22,5 +22,8 @@ namespace green_map.Models {
         [DisplayName("Coordinates")]
         [Required(ErrorMessage = "is required")]
         public List<Coordinate> Coordinates { get; set; }
+
+        [DisplayName("Images")]
+        public List<string> Images { get; set; }
     }
 }

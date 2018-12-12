@@ -76,6 +76,7 @@ export class AppComponent implements OnInit {
     });
 
     this._mapShapeService.get().subscribe(data => {
+      console.log(data);
       this._ngRedux.dispatch({ type: MapShapeAction.add, payload: data } as MapShapeDispatch);
     });
   }

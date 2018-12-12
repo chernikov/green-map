@@ -4,6 +4,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { QuillModule } from 'ngx-quill';
 
+import { SharedPipesModule } from '@pipes/shared-pipes.module';
+
 import { AdminRoutingModule } from './admin-routing.module';
 
 import { AdminComponent } from './admin.component';
@@ -17,7 +19,8 @@ import { AdminSettingsComponent } from './admin-settings/admin-settings.componen
         AdminRoutingModule,
         CommonModule,
         ReactiveFormsModule,
-        QuillModule
+        QuillModule,
+        SharedPipesModule
     ],
     declarations: [
         AdminComponent,
