@@ -2,6 +2,7 @@ import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { NotificationsService } from 'angular2-notifications';
+import { Router } from '@angular/router';
 import { NgRedux } from '@angular-redux/store';
 import { MetaService } from '@ngx-meta/core';
 
@@ -10,16 +11,23 @@ import { IAppState } from '@store';
 import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 import { SettingAction } from '@global-reducers/setting.reducer';
+import { MapAction } from '@global-reducers/map.reducer';
+import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 
+import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
 import { SettingDispatch } from '@dispatch-classes/setting-dispatch.class';
 import { AuthTokenDispatch } from '@dispatch-classes/auth-token-dispatch.class';
 import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
+import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
 
 import { User } from '@classes/user.class';
+import { MapShapeItem } from '@classes/map-shape-item.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
 
 import { SettingService } from '@services/setting.service';
+import { MapService } from '@services/map.service';
+import { MapShapeService } from '@services/map-shape.service';
 
 const tokenHelper = new JwtHelperService();
 
@@ -31,6 +39,7 @@ const tokenHelper = new JwtHelperService();
 
 export class AppComponent implements OnInit {
   isBrowser:boolean;
+  connection:any;
   notificationOptions = {
     showProgressBar: true,
     timeOut: 3400,
@@ -42,7 +51,10 @@ export class AppComponent implements OnInit {
     private _notificationSubject:NotificationSubject,
     private _notificationsService:NotificationsService,
     private _settingService:SettingService,
+    private _mapService:MapService,
+    private _mapShapeService:MapShapeService,
     private _metaService:MetaService,
+    private _router:Router,
     @Inject(PLATFORM_ID) _platformId
   ) {
     this.isBrowser = isPlatformBrowser(_platformId);
@@ -56,10 +68,35 @@ export class AppComponent implements OnInit {
 
   prebootData() {
     this._settingService.get().subscribe(data => {
-      //this._metaService.setTitle(data);
-      console.log(data);
       this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
+      this.setMetaTegs();
     });
+
+    this._mapService.get().subscribe(data => {
+      this._ngRedux.dispatch({ type: MapAction.update, payload: data } as MapDispatch);
+      this.setMapUrlData();
+    });
+
+    this._mapShapeService.get().subscribe(data => {
+      this._ngRedux.dispatch({ type: MapShapeAction.update, payload: data } as MapShapeDispatch);
+    });
+  }
+
+  setMapUrlData() {
+    if(this.isBrowser && window.location.pathname === '/' && !window.location.search) {
+      let mapData = this._ngRedux.getState().map;
+
+      this._router.navigate(['/'], { queryParams: { zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng } });
+    }
+  }
+
+  setMetaTegs() {
+    let data = this._ngRedux.getState().setting;
+
+    if(data) {
+      this._metaService.setTitle(data.title);
+      this._metaService.setTag('description', data.description);
+    }
   }
 
   watchNotification() {

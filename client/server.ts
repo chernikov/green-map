@@ -27,11 +27,15 @@ global["document"] = win.document;
 global["branch"] = null;
 global["object"] = win.object;
 
+const proxyHttp = 'http://server';
+
 export const app = express();
 
 app.use(compression());
 app.use(cors());
-app.use('/api', proxy({target: 'http://server'}));
+app.use('/api', proxy({target: proxyHttp}));
+app.use('/Upload', proxy({target: proxyHttp}));
+app.use('/ws', proxy({target: proxyHttp, ws: true}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 

@@ -14,7 +14,7 @@ namespace green_map.Helpers {
         public void Run() {
             this.SeedRole();
             this.SeedUser();
-            //this.SeedMapConfigs();
+            this.SeedMap();
         }
 
         public void SeedRole() {
@@ -53,18 +53,18 @@ namespace green_map.Helpers {
             if(items.Count < 1) collection.InsertOne(user);
         }
 
-/*         public void SeedMapConfigs() {
-            var configs = new MapConfig {
+        public void SeedMap() {
+            var configs = new Map {
                 Zoom = 12,
                 Position = new Coordinate {
-                    Lat = 48.925370,
-                    Lng = 24.707441
+                    Lat = 48.92446768264424,
+                    Lng = 24.707784322753934
                 }
             };
 
-            var collection = _database.GetCollection<MapConfig>("MapConfig");
+            var collection = _database.GetCollection<Map>("Map");
             var items = collection.Find(_ => true).ToList();
             if(items.Count < 1) collection.InsertOne(configs);
-        } */
+        }
     }
 }

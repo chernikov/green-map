@@ -1,12 +1,11 @@
 import { Component, OnInit, ViewChild, ElementRef, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
 
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
 import { RouterSlideAnimation } from '@animations';
-
-import { MapConfig } from '@classes/map-config.class';
 
 @Component({
   selector: 'app-default',
@@ -18,16 +17,11 @@ import { MapConfig } from '@classes/map-config.class';
 })
 
 export class DefaultComponent implements OnInit {
-  @ViewChild('mapElement') mapElement:ElementRef;
-  map:google.maps.Map;
-  mapData:MapConfig;
-  isBrowser:boolean;
 
   constructor(
-    private _ngRedux:NgRedux<IAppState>,
-    @Inject(PLATFORM_ID) _platformId
+    private _ngRedux:NgRedux<IAppState>
   ) {
-    this.isBrowser = isPlatformBrowser(_platformId);
+    
   }
 
   ngOnInit() {
@@ -35,11 +29,20 @@ export class DefaultComponent implements OnInit {
     this.buildMap();
   }
 
+  watchMapData() {
+/*     this._activatedRoute.queryParams.subscribe(params => {
+      if(this.map) {
+        console.log(params['zoom']);
+        this.map.setZoom(params['zoom']);
+      }
+    }); */
+  }
+
   getMapConfigs() {
-    this._ngRedux.select<MapConfig>('mapConfig').subscribe(data => {
+/*     this._ngRedux.select<MapConfig>('mapConfig').subscribe(data => {
       this.mapData = data;
       if(this.mapData) this.buildMap();
-    });
+    }); */
   }
 
   getOutletDepth(outlet) {
@@ -47,10 +50,10 @@ export class DefaultComponent implements OnInit {
   }
 
   buildMap() {
-    if(this.isBrowser) {
+/*     if(this.isBrowser) {
       const mapProp = {
-        /* center: new google.maps.LatLng(this.mapData.position.lat, this.mapData.position.lng),
-        zoom: this.mapData.zoom, */
+        center: new google.maps.LatLng(this.mapData.position.lat, this.mapData.position.lng),
+        zoom: this.mapData.zoom,
         center: new google.maps.LatLng(48.909561, 24.705088),
         zoom: 15,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
@@ -61,7 +64,7 @@ export class DefaultComponent implements OnInit {
 
       this.map = new google.maps.Map(this.mapElement.nativeElement, mapProp);
       this.patchMap();
-    }
+    } */
   }
 
   patchMap() {
@@ -83,6 +86,13 @@ export class DefaultComponent implements OnInit {
         item.setMap(this.map);
       }
     } */
+  }
+
+  watchMapEvents() {
+/*     google.maps.event.addListener(this.map, 'zoom_changed', () => {
+      console.log(this.map.getZoom());
+      //this.mapConfigs.zoom = this.map.getZoom()
+    }); */
   }
 
 }

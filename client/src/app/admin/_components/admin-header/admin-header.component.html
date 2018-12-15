@@ -2,7 +2,7 @@
   <h1>Welcome, admin</h1>
   <ul>
     <li>
-      <a [routerLink]="['/']">Home page</a>
+      <a [routerLink]="['/']" [queryParams]="{ zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng  }">Home page</a>
     </li>
     <li class="logout" (click)="onLogout()">
       Logout

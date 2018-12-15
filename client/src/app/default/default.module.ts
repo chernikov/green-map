@@ -6,6 +6,7 @@ import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultComponent } from './default.component';
 import { AboutComponent } from './about/about.component';
 import { HomeComponent } from './home/home.component';
+import { MapComponent } from './_components/map/map.component';
 
 @NgModule({
 	imports:[
@@ -15,7 +16,8 @@ import { HomeComponent } from './home/home.component';
 	declarations: [
 		DefaultComponent,
 		AboutComponent,
-		HomeComponent
+		HomeComponent,
+		MapComponent
 	],
 	providers: [ ]
 })

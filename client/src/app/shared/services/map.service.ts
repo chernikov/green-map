@@ -1,22 +1,43 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { TransferState, makeStateKey } from '@angular/platform-browser';
+import { Observable, Observer } from "rxjs";
 import { map } from "rxjs/operators";
 
-import { MapConfig } from '@classes/map-config.class';
-import { MapConfigResponse } from '@classes/map-config-response.class';
+import { ProdApiUrl } from '@project-configs';
+
+import { Map } from '@classes/map.class';
+import { MapResponse } from '@classes/map-response.class';
+
+const MAP_KEY = makeStateKey('map');
 
 @Injectable({ providedIn: 'root' })
-export class MapConfigService {
-	private apiUrl:string = 'http://localhost:8080/api/map-config';
-    constructor(private http: HttpClient) {}
+export class MapService {
+	private apiUrl:string = '/api/map';
+	private isServer:boolean;
 
-	get():Observable<MapConfig> {
-		return this.http.get(this.apiUrl).pipe(map(res => res ? MapConfig.fromJS(res) : null));
+	constructor(
+		private _http:HttpClient,
+		private _transferState:TransferState,
+    	@Inject(PLATFORM_ID) _platformId	
+	) {
+		this.isServer = isPlatformServer(_platformId);
 	}
 
-    save(data:MapConfig):Observable<MapConfigResponse> {
+	get():Observable<Map> {
+		const mapData:Map = this._transferState.get(MAP_KEY, null);
+
+		if(!mapData) {
+    		let url:string = this.isServer ? (ProdApiUrl + this.apiUrl) : this.apiUrl;
+			return this._http.get(url).pipe(map(res => res ? Map.fromJS(res) : null));
+    	} else {
+      		return Observable.create((observer:Observer<Map>) => observer.next(mapData));
+    	}
+	}
+
+	save(data:Map):Observable<MapResponse> {
 		let headers = new HttpHeaders().set('Content-Type', 'application/json');
-		return this.http.post<MapConfigResponse>(this.apiUrl, data, { headers });
+		return this._http.post<MapResponse>(this.apiUrl, data, { headers });
 	}
 }
