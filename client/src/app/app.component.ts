@@ -12,6 +12,7 @@ import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 import { SettingAction } from '@global-reducers/setting.reducer';
 import { MapAction } from '@global-reducers/map.reducer';
+import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 
 import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
 import { SettingDispatch } from '@dispatch-classes/setting-dispatch.class';
@@ -20,13 +21,13 @@ import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
 import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
 
 import { User } from '@classes/user.class';
+import { MapShapeItem } from '@classes/map-shape-item.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
 
 import { SettingService } from '@services/setting.service';
 import { MapService } from '@services/map.service';
 import { MapShapeService } from '@services/map-shape.service';
-import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 
 const tokenHelper = new JwtHelperService();
 
@@ -38,6 +39,7 @@ const tokenHelper = new JwtHelperService();
 
 export class AppComponent implements OnInit {
   isBrowser:boolean;
+  connection:any;
   notificationOptions = {
     showProgressBar: true,
     timeOut: 3400,
@@ -76,8 +78,7 @@ export class AppComponent implements OnInit {
     });
 
     this._mapShapeService.get().subscribe(data => {
-      console.log(data);
-      this._ngRedux.dispatch({ type: MapShapeAction.add, payload: data } as MapShapeDispatch);
+      this._ngRedux.dispatch({ type: MapShapeAction.update, payload: data } as MapShapeDispatch);
     });
   }
 

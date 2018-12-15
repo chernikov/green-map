@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, AbstractControl, FormControl } from '@angular/forms';
 import { NotificationType } from 'angular2-notifications';
+import * as signalR from '@aspnet/signalr';
 
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
@@ -27,11 +28,12 @@ import { ShapeImageUploadService } from '@services/shape-image-upload.service';
   templateUrl: './admin-map.component.html',
   styleUrls: ['./admin-map.component.scss']
 })
-export class AdminMapComponent implements OnInit {
+export class AdminMapComponent implements OnInit, OnDestroy {
   @ViewChild('mapElement') mapElement:ElementRef;
   map:google.maps.Map;
   mapDraw:google.maps.drawing.DrawingManager;
   mapData:Map;
+  mapShapeConnection:any;
 
   form:FormGroup;
   shapeForm:FormGroup;
@@ -66,6 +68,58 @@ export class AdminMapComponent implements OnInit {
     this.getMapShapes();
     this.buildForm();
     this.buildShapeForm();
+    this.watchShapeUpdate();
+  }
+
+  ngOnDestroy() {
+    this.mapShapeConnection.stop();
+  }
+
+  watchShapeUpdate() {
+    this.mapShapeConnection = new signalR.HubConnectionBuilder().withUrl('/ws/map-shape').build();
+
+    this.mapShapeConnection.start();
+
+    this.mapShapeConnection.on("MapShapeChange", (type:string, data:MapShapeItem) => {
+      if(type === "update") {
+        this._ngRedux.dispatch({ type: MapShapeAction.update, payload: [data] } as MapShapeDispatch);
+
+        let shape = this.allShapes.find(i => i.id === data.id);
+
+        if(!shape) {
+          let polygonObj = { ...this.polygonDefaultSetup };
+          polygonObj.paths = data.coordinates;
+          polygonObj.editable = false;
+  
+          let item = new google.maps.Polygon(polygonObj);
+          item.set('id', data.id);
+          item.set('title', data.title);
+          item.set('description', data.description);
+          item.set('images', data.images);
+          this.allShapes.push(item);
+  
+          google.maps.event.addListener(item, 'click', (e) => {
+            item.setEditable(true);
+            this.setMapSelection(item);
+          });
+
+        } else {
+          shape.setPaths(data.coordinates);
+          shape.set('title', data.title);
+          shape.set('description', data.description);
+          shape.set('images', data.images);
+
+          if(this.selectedMapShape.id === data.id) this.patchShapeForm(); 
+        }
+      } else if(type === "delete") {
+        this._ngRedux.dispatch({ type: MapShapeAction.remove, payload: [data] } as MapShapeDispatch);
+
+        let shape = this.allShapes.find(i => i.id === data.id);
+        this.allShapes = this.allShapes.filter(p => p.id != data.id);
+        shape.setMap(null);
+        this.selectedMapShape = null;
+      }
+    });
   }
 
   buildShapeForm() {
@@ -192,6 +246,8 @@ export class AdminMapComponent implements OnInit {
       newShape.set('description', '');
 
       this.allShapes.push(newShape);
+
+      console.log(newShape);
 
       if (e.type !== google.maps.drawing.OverlayType.MARKER) {
         this.mapDraw.setDrawingMode(null);
@@ -380,7 +436,11 @@ export class AdminMapComponent implements OnInit {
 
   saveShape(data:MapShapeItem) {
     this._mapShapeService.update(data).subscribe(res => {
-      if(res.isSuccess) this._ngRedux.dispatch({ type: MapShapeAction.update, payload: [res.result] } as MapShapeDispatch);
+      console.log(data);
+      if(res.isSuccess && data.id === null) {
+        this.selectedMapShape.set('id', res.result.id);
+        console.log("update id");
+      }
 
       let notification = new AppNotification({
         type: res.isSuccess ? NotificationType.Success : NotificationType.Error,
@@ -394,11 +454,6 @@ export class AdminMapComponent implements OnInit {
 
   onDeleteShape() {
     this._mapShapeService.delete(this.selectedMapShape.id).subscribe(res => {
-      if(res.isSuccess) {
-        this._ngRedux.dispatch({ type: MapShapeAction.update, payload: [this.selectedMapShape] } as MapShapeDispatch);
-        this.onDeleteSelectedShape();
-      }
-
       let notification = new AppNotification({
         type: res.isSuccess ? NotificationType.Success : NotificationType.Error,
         title: res.isSuccess ? 'Success' : 'Error',

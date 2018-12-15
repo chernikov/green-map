@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using green_map.Helpers;
+using green_map.Hubs;
 using green_map.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -38,10 +40,20 @@ namespace green_map
             services.AddTransient<SeedDB>();
             services.AddTransient<UploadManager>();
 
+/*             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>{
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .WithOrigins("http://localhost:4200");
+            })); */
+            
+            services.AddSignalR();
+
             services.Configure<ServerConfiguration>(options => {
                 options.MongoConnectionString = Configuration.GetSection("MongoConnection:ConnectionString").Value;
                 options.MongoDatabase = Configuration.GetSection("MongoConnection:Database").Value;
             });
+        
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options => {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -55,6 +67,8 @@ namespace green_map
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                 };
             });
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +90,10 @@ namespace green_map
             //app.UseHttpsRedirection();
             app.UseMvc();
 
+            //app.UseCors("CorsPolicy");
+            app.UseSignalR(routes => {
+                routes.MapHub<MapShapeHub>("/ws/map-shape");
+            });
             app.UseStaticFiles(new StaticFileOptions() {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Upload")),
                 RequestPath = new PathString("/upload")

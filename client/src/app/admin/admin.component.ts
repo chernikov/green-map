@@ -15,6 +15,7 @@ import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
 
 import { User } from '@classes/user.class';
 import { Login } from '@classes/login.class';
+import { Map } from '@classes/map.class';
 
 import { LoginService } from '@services/login.service';
 
@@ -30,6 +31,7 @@ export class AdminComponent implements OnInit {
   form:FormGroup;
   authUser:User;
   formErrors:string[];
+  mapData:Map;
 
   constructor(
     private _formBuilder:FormBuilder,
@@ -41,6 +43,7 @@ export class AdminComponent implements OnInit {
   ngOnInit() {
     this.buildForm();
     this.getUser();
+    this.getQueryParams();
   }
 
   getUser() {
@@ -57,8 +60,12 @@ export class AdminComponent implements OnInit {
     });
   }
 
+  getQueryParams() {
+    this.mapData = this._ngRedux.getState().map;
+  }
+
   onCancel() {
-    this._router.navigateByUrl('/');
+    this._router.navigate(['/'], { queryParams: { zoom: this.mapData.zoom, lat: this.mapData.position.lat, lng: this.mapData.position.lng } });
   }
 
   onLogin() {

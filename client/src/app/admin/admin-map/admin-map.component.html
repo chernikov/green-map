@@ -60,7 +60,7 @@
       </div>
     </div>
     <div class="buttons-wrap">
-      <button class="button primary" (click)="onUpdateShape()" [class.is-disabled]="shapeForm.invalid" [disabled]="shapeForm.invalid"><span>Обновити</span></button>
+      <button class="button primary" (click)="onUpdateShape()" [class.is-disabled]="shapeForm.invalid" [disabled]="shapeForm.invalid"><span>{{ (selectedMapShape && selectedMapShape.id && selectedMapShape.id.length > 20) ? "Обновити" : "Зберегти" }}</span></button>
       <button class="button cancel" (click)="onDeleteShape()"><span>Видалити</span></button>
       <button class="button" (click)="onResetShape()"><span>Відновити</span></button>
     </div>

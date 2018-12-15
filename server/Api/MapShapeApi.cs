@@ -5,14 +5,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using green_map.Models;
+using green_map.Hubs;
+using Microsoft.AspNetCore.SignalR;
 
 namespace green_map.Api {
     [Route("api/map-shape")]
     public class MapShapeApi : BaseApi {
         private readonly IMongoDatabase _db = null;
+        private readonly IHubContext<MapShapeHub, IMapShapeHub> _mapShapeHub = null;
 
-        public MapShapeApi(IOptions<ServerConfiguration> settings, IConfiguration config) : base(settings, config) {
+        public MapShapeApi(IOptions<ServerConfiguration> settings, IConfiguration config, IHubContext<MapShapeHub, IMapShapeHub> mapShapeHub) : base(settings, config) {
             _db = base.GetMongoDB();
+            _mapShapeHub = mapShapeHub;
         }
 
         [HttpGet]
@@ -46,6 +50,7 @@ namespace green_map.Api {
 
                     collection.ReplaceOneAsync(c => c.Id == value.Id, value);
                 }
+                _mapShapeHub.Clients.All.MapShapeChange("update", value);
                 response.Result = value;
             } else {
                 foreach(var item in ModelState) {
@@ -82,6 +87,8 @@ namespace green_map.Api {
                     }
                 }
             }
+
+            _mapShapeHub.Clients.All.MapShapeChange("delete", item);
 
             response.Errors = null;
             response.IsSuccess = true;
