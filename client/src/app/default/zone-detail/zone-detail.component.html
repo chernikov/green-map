@@ -1,0 +1,8 @@
+<!-- shape:
+{{ currentShape | json }} -->
+
+{{ currentShape.title }}
+<div class="div" [innerHTML]="currentShape.description"></div>
+<ngx-gallery [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+<!-- <div class="image" *ngFor="let item of currentShape.images" [style.background-image]="'url(' + item + ')'"></div> -->
+<!-- {{ currentShape.description }} -->

@@ -1,0 +1,14 @@
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+}
+
+.zone {
+    height: 50px;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    border-bottom: 1px solid gray;
+}

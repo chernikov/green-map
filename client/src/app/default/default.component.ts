@@ -45,9 +45,10 @@ export class DefaultComponent implements OnInit {
     }); */
   }
 
-  getOutletDepth(outlet) {
+/*   getOutletDepth(outlet) {
+    console.log(outlet.activatedRouteData['depth']);
     return outlet.activatedRouteData['depth'];
-  }
+  } */
 
   buildMap() {
 /*     if(this.isBrowser) {
