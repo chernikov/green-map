@@ -4,7 +4,7 @@
 # Set the following variables as per your requirement
 #=====================================================================
 # Database Name to backup
-MONGO_DATABASE="mapsDB"
+MONGO_DATABASE="GreenMap"
 # Backup directory
 BACKUPS_DIR="/tmp/backups"
 # Database user name

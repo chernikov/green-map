@@ -7,8 +7,5 @@ export class ErrorHandlerService implements ErrorHandler {
 
   handleError(error) {
     console.log(error);
-/*     console.log(error);
-    debugger; */
-    //throw error;
  }
 }
