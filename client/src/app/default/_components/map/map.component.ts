@@ -116,7 +116,6 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapShapeConnection.on("MapShapeChange", (type:string, data:MapShapeItem) => {
       if(type === "update") {
         this._ngRedux.dispatch({ type: MapShapeAction.update, payload: [data] } as MapShapeDispatch);
-
         let shape = this.allShapes.find(i => i.id === data.id);
 
         if(!shape) {
@@ -136,11 +135,14 @@ export class MapComponent implements OnInit, OnDestroy {
           });
   
           item.setMap(this.map);
+          this.mapShapes.push(data);
         } else {
           shape.setPaths(data.coordinates);
           shape.set('title', data.title);
           shape.set('description', data.description);
           shape.set('images', data.images);
+
+          this.mapShapes = this.mapShapes.map(s => s.id != data.id ? s : data);
         }
       } else if(type === "delete") {
         this._ngRedux.dispatch({ type: MapShapeAction.remove, payload: [data] } as MapShapeDispatch);

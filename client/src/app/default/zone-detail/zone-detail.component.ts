@@ -77,6 +77,7 @@ export class ZoneDetailComponent implements OnInit {
   getCurrentShape() {
     if(this.currentShapeId && this.allShapes && this.allShapes.length) {
       this.currentShape = this.allShapes.find(s => s.id === this.currentShapeId);
+      this.galleryImages = [];
       if(this.currentShape && this.currentShape.images && this.currentShape.images.length) {
         for(let image of this.currentShape.images) {
           this.galleryImages.push(new NgxGalleryImage({

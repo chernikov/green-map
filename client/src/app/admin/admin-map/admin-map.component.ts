@@ -247,8 +247,6 @@ export class AdminMapComponent implements OnInit, OnDestroy {
 
       this.allShapes.push(newShape);
 
-      console.log(newShape);
-
       if (e.type !== google.maps.drawing.OverlayType.MARKER) {
         this.mapDraw.setDrawingMode(null);
         google.maps.event.addListener(newShape, 'click', (e) => {
@@ -436,11 +434,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
 
   saveShape(data:MapShapeItem) {
     this._mapShapeService.update(data).subscribe(res => {
-      console.log(data);
-      if(res.isSuccess && data.id === null) {
-        this.selectedMapShape.set('id', res.result.id);
-        console.log("update id");
-      }
+      if(res.isSuccess && data.id === null) this.selectedMapShape.set('id', res.result.id);
 
       let notification = new AppNotification({
         type: res.isSuccess ? NotificationType.Success : NotificationType.Error,

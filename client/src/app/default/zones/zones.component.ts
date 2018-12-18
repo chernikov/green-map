@@ -38,7 +38,6 @@ export class ZonesComponent implements OnInit {
   watchZonesChange() {
     this._ngRedux.select<MapShapeItem[]>('mapShape').subscribe(data => {
       this.mapShapes = data;
-      console.log(data);
     });
   }
 

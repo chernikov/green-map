@@ -10,11 +10,22 @@ export const MapShapeAction = {
 export const MapShapeReducer = (state = MapShapeInitialState, action:{type:string, payload:MapShapeItem[]}):MapShapeItem[] => {
     switch(action.type) {
         case MapShapeAction.update:
-            if(state && state.length) {
-                return state.map(i => {
-                    let item = action.payload.find(newItem => i.id === newItem.id);
-                    return item ? { ...item } as MapShapeItem : i;
-                });
+            if(state.length) {
+                let newState = [];
+                
+                // update
+                for(let current of state) {
+                    let item = action.payload.find(newItem => current.id === newItem.id);
+                    item ? newState.push(item) : newState.push(current);
+                }
+
+                // add new
+                for(let newItem of action.payload) {
+                    let item = newState.find(i => i.id === newItem.id);
+                    if(!item) newState.push(newItem)
+                }
+
+                return state = newState;
             } else {
                 return state = [ ...state, ...action.payload ];
             }
