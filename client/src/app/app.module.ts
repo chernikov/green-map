@@ -1,6 +1,6 @@
 import { NgtUniversalModule } from '@ng-toolkit/universal';
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserTransferStateModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,6 +13,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { IAppState, rootReducer, INITIAL_STATE } from '@store';
 
 import { TOKEN_API_INJECTOR } from '@helpers/token-api-injector.service';
+import { ErrorHandlerService } from '@helpers/error-handler.service';
 
 import { AppComponent } from './app.component';
 
@@ -32,6 +33,10 @@ import { AppComponent } from './app.component';
     AppRoutingModule
   ],
   providers: [
+    {
+      provide: ErrorHandler,
+      useClass: ErrorHandlerService
+    },
     TOKEN_API_INJECTOR
   ]
 })

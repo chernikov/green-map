@@ -11,6 +11,8 @@ import { MapShapeItem } from '@classes/map-shape-item.class';
 import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
 
+import { RedirectToPolygonSubject } from '../../_core/subjects/redirect-to-polygon.subject';
+
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
@@ -32,6 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
     private _ngRedux:NgRedux<IAppState>,
     private _router:Router,
     private _activatedRoute:ActivatedRoute,
+    private _redirectToPolygonSubject:RedirectToPolygonSubject,
     @Inject(PLATFORM_ID) _platformId
   ) { 
     this.isBrowser = isPlatformBrowser(_platformId);
@@ -50,6 +53,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.getMapData();
     this.getMapShapes();
     this.watchShapeUpdate();
+    this.watchMapRedirect();
   }
 
   ngOnDestroy() {
@@ -58,8 +62,44 @@ export class MapComponent implements OnInit, OnDestroy {
 
   getMapData() {
     this.mapData = { ...this._ngRedux.getState().map } as Map;
-    console.log(this.mapData);
     this.buildMap();
+  }
+
+  watchMapRedirect() {
+    this._redirectToPolygonSubject.watch().subscribe(shapeId => this.redirectToShape(shapeId));
+  }
+
+  redirectToShape(id:string) {
+    let shape = this.mapShapes.find(i => i.id === id);
+    if(shape) {
+      let bounds = new google.maps.LatLngBounds();
+
+      for(let i = 0; i < shape.coordinates.length; i++) {
+        bounds.extend(new google.maps.LatLng(shape.coordinates[i].lat, shape.coordinates[i].lng));
+      }
+  
+      this._router.navigate(["/zone-detail/" + shape.id], { queryParams: { zoom: this.getZoomByBounds(this.map, bounds), lat: bounds.getCenter().lat().toFixed(5), lng: bounds.getCenter().lng().toFixed(5) }});
+    }
+  }
+
+  getZoomByBounds(map, bounds){
+    let MAX_ZOOM = map.mapTypes.get(map.getMapTypeId()).maxZoom || 21;
+    let MIN_ZOOM = map.mapTypes.get(map.getMapTypeId()).minZoom || 0;
+  
+    let ne = map.getProjection().fromLatLngToPoint(bounds.getNorthEast());
+    let sw = map.getProjection().fromLatLngToPoint(bounds.getSouthWest()); 
+  
+    let worldCoordWidth = Math.abs(ne.x - sw.x);
+    let worldCoordHeight = Math.abs(ne.y - sw.y);
+  
+    let FIT_PAD = 40;
+  
+    for(let zoom = MAX_ZOOM; zoom >= MIN_ZOOM; --zoom){ 
+        if(worldCoordWidth * ( 1 << zoom) + 2 * FIT_PAD < this.mapElement.nativeElement.clientWidth && 
+           worldCoordHeight * ( 1 << zoom ) + 2 * FIT_PAD < this.mapElement.nativeElement.clientHeight)
+            return zoom;
+    }
+    return 0;
   }
 
   getMapShapes() {
@@ -92,7 +132,7 @@ export class MapComponent implements OnInit, OnDestroy {
           this.allShapes.push(item);
   
           google.maps.event.addListener(item, 'click', (e) => {
-            console.log('On Select Polygon');
+            this.redirectToShape((<any>item).id);
           });
   
           item.setMap(this.map);
@@ -146,9 +186,7 @@ export class MapComponent implements OnInit, OnDestroy {
         this.allShapes.push(item);
 
         google.maps.event.addListener(item, 'click', (e) => {
-          console.log('On Select Polygon');
-          //item.setEditable(true);
-          //this.setMapSelection(item);
+          this.redirectToShape((<any>item).id);
         });
 
         item.setMap(this.map);
