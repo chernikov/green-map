@@ -12,22 +12,18 @@ import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 import { SettingAction } from '@global-reducers/setting.reducer';
 import { MapAction } from '@global-reducers/map.reducer';
-import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 
 import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
 import { SettingDispatch } from '@dispatch-classes/setting-dispatch.class';
 import { AuthTokenDispatch } from '@dispatch-classes/auth-token-dispatch.class';
 import { AuthUserDispatch } from '@dispatch-classes/auth-user.dispatch.class';
-import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
 
 import { User } from '@classes/user.class';
-import { MapShapeItem } from '@classes/map-shape-item.class';
 
 import { NotificationSubject } from '@subjects/notification.subject';
 
 import { SettingService } from '@services/setting.service';
 import { MapService } from '@services/map.service';
-import { MapShapeService } from '@services/map-shape.service';
 
 const tokenHelper = new JwtHelperService();
 
@@ -52,7 +48,6 @@ export class AppComponent implements OnInit {
     private _notificationsService:NotificationsService,
     private _settingService:SettingService,
     private _mapService:MapService,
-    private _mapShapeService:MapShapeService,
     private _metaService:MetaService,
     private _router:Router,
     @Inject(PLATFORM_ID) _platformId
@@ -62,24 +57,35 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.watchNotification();
-    this.prebootData();
+    this.getSettingsData();
+    this.getMapData();
     this.getAuth();
   }
 
-  prebootData() {
-    this._settingService.get().subscribe(data => {
-      this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
+  getSettingsData() {
+    let data = this._ngRedux.getState().setting;
+
+    if(!data) {
+      this._settingService.get().subscribe(data => {
+        this._ngRedux.dispatch({ type: SettingAction.update, payload: data } as SettingDispatch);
+        this.setMetaTegs();
+      });
+    } else {
       this.setMetaTegs();
-    });
+    }
+  }
 
-    this._mapService.get().subscribe(data => {
-      this._ngRedux.dispatch({ type: MapAction.update, payload: data } as MapDispatch);
+  getMapData() {
+    let data = this._ngRedux.getState().map;
+
+    if(!data) {
+      this._mapService.get().subscribe(data => {
+        this._ngRedux.dispatch({ type: MapAction.update, payload: data } as MapDispatch);
+        this.setMapUrlData();
+      });
+    } else {
       this.setMapUrlData();
-    });
-
-    this._mapShapeService.get().subscribe(data => {
-      this._ngRedux.dispatch({ type: MapShapeAction.update, payload: data } as MapShapeDispatch);
-    });
+    }
   }
 
   setMapUrlData() {

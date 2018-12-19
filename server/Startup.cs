@@ -39,13 +39,6 @@ namespace green_map
 
             services.AddTransient<SeedDB>();
             services.AddTransient<UploadManager>();
-
-/*             services.AddCors(o => o.AddPolicy("CorsPolicy", builder =>{
-                builder
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .WithOrigins("http://localhost:4200");
-            })); */
             
             services.AddSignalR();
 
@@ -90,7 +83,6 @@ namespace green_map
             //app.UseHttpsRedirection();
             app.UseMvc();
 
-            //app.UseCors("CorsPolicy");
             app.UseSignalR(routes => {
                 routes.MapHub<MapShapeHub>("/ws/map-shape");
             });

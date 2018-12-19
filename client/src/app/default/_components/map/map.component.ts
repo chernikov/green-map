@@ -6,12 +6,21 @@ import * as signalR from '@aspnet/signalr';
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
-import { Map } from '@classes/map.class';
-import { MapShapeItem } from '@classes/map-shape-item.class';
-import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 import { MapShapeDispatch } from '@dispatch-classes/map-shape-dispatch.class';
 
+import { MapShapeAction } from '@global-reducers/map-shape.reducer';
+import { MapAction } from '@global-reducers/map.reducer';
+
+import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
+
+import { Map } from '@classes/map.class';
+import { MapShapeItem } from '@classes/map-shape-item.class';
+
+import { MapService } from '@services/map.service';
+
 import { RedirectToPolygonSubject } from '../../_core/subjects/redirect-to-polygon.subject';
+import { MapShapeService } from '@services/map-shape.service';
+
 
 @Component({
   selector: 'app-map',
@@ -34,6 +43,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private _ngRedux:NgRedux<IAppState>,
     private _router:Router,
     private _activatedRoute:ActivatedRoute,
+    private _mapService:MapService,
+    private _mapShapeService:MapShapeService,
     private _redirectToPolygonSubject:RedirectToPolygonSubject,
     @Inject(PLATFORM_ID) _platformId
   ) { 
@@ -61,8 +72,31 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   getMapData() {
-    this.mapData = { ...this._ngRedux.getState().map } as Map;
-    this.buildMap();
+    this.mapData = this._ngRedux.getState().map;
+
+    if(!this.mapData) {
+      this._mapService.get().subscribe(data => {
+        this.mapData = data;
+        this._ngRedux.dispatch({ type: MapAction.update, payload: data } as MapDispatch);
+        this.buildMap();
+      });
+    } else {
+      this.buildMap();
+    }
+  }
+
+  getMapShapes() {
+    this.mapShapes = this._ngRedux.getState().mapShape;
+
+    if(!this.mapShapes.length) {
+      this._mapShapeService.get().subscribe(data => {
+        this.mapShapes = data;
+        this._ngRedux.dispatch({ type: MapShapeAction.update, payload: data } as MapShapeDispatch);
+        this.patchMap();
+      });
+    } else {
+      this.patchMap();
+    }
   }
 
   watchMapRedirect() {
@@ -100,12 +134,6 @@ export class MapComponent implements OnInit, OnDestroy {
             return zoom;
     }
     return 0;
-  }
-
-  getMapShapes() {
-    let data = this._ngRedux.getState().mapShape;
-    this.mapShapes = data.map(i => new MapShapeItem(i));
-    this.patchMap();
   }
 
   watchShapeUpdate() {

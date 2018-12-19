@@ -142,16 +142,37 @@ export class AdminMapComponent implements OnInit, OnDestroy {
   }
 
   getMapShapes() {
-    let data = this._ngRedux.getState().mapShape;
-    this.mapShapes = data.map(i => new MapShapeItem(i));
-    this.patchMap();
+    let cache = this._ngRedux.getState().mapShape;
+
+    if(!cache.length) {
+      this._mapShapeService.get().subscribe(data => {
+        this.mapShapes = data.map(i => new MapShapeItem(i));
+        this._ngRedux.dispatch({ type: MapShapeAction.update, payload: data } as MapShapeDispatch);
+        this.patchMap();
+      });
+    } else {
+      this.mapShapes = cache.map(i => new MapShapeItem(i));
+      this.patchMap();
+    }
   }
 
   getMapData() {
-    this.mapData = { ...this._ngRedux.getState().map } as Map;
-    this.buildMap();
-    this.patchMapForm();
+    this.mapData = this._ngRedux.getState().map;
+
+    if(!this.mapData) {
+      this._mapService.get().subscribe(data => {
+        this.mapData = data;
+        this._ngRedux.dispatch({ type: MapAction.update, payload: data } as MapDispatch);
+        this.buildMap();
+      });
+    } else {
+      this.buildMap();
+    }
   }
+
+
+
+
 
   buildMap() {
     const mapProp = {
