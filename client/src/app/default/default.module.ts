@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgxGalleryModule } from 'ngx-gallery';
+import { DisqusModule } from 'ngx-disqus';
 
 import { RedirectToPolygonSubject } from './_core/subjects/redirect-to-polygon.subject';
 
@@ -17,7 +18,8 @@ import { ZoneDetailComponent } from './zone-detail/zone-detail.component';
 	imports:[
 		CommonModule,
 		DefaultRoutingModule,
-		NgxGalleryModule
+		NgxGalleryModule,
+		DisqusModule
 	],
 	declarations: [
 		DefaultComponent,

@@ -5214,6 +5214,12 @@ neo-async@^2.5.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
 
+ngx-disqus@^2.4.3:
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/ngx-disqus/-/ngx-disqus-2.4.3.tgz#1080b91cd20771b4499396da06f1431ce8d8bf68"
+  dependencies:
+    tslib "^1.9.0"
+
 ngx-gallery@^5.9.0:
   version "5.9.0"
   resolved "https://registry.yarnpkg.com/ngx-gallery/-/ngx-gallery-5.9.0.tgz#7b3043122e1ca7a4db4afdc067ec9512345d7b44"

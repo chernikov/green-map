@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 import { NgReduxModule, NgRedux, DevToolsExtension } from '@angular-redux/store';
 import { MetaModule } from '@ngx-meta/core';
+import { DISQUS_SHORTNAME } from 'ngx-disqus';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -36,6 +37,10 @@ import { AppComponent } from './app.component';
     {
       provide: ErrorHandler,
       useClass: ErrorHandlerService
+    },
+		{ 
+      provide: DISQUS_SHORTNAME,
+      useValue: 'green-map'
     },
     TOKEN_API_INJECTOR
   ]

@@ -1,3 +1,5 @@
-{{ currentShape.title }}
-<div class="div" [innerHTML]="currentShape.description"></div>
+{{ currentShape ? currentShape.title : '' }}
+<div class="div" [innerHTML]="currentShape ? currentShape.description : ''"></div>
 <ngx-gallery *ngIf="galleryImages && galleryImages.length" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+
+<disqus *ngIf="currentShape && currentShape.id" [identifier]="currentShape.id" [title]="'Light Theme'"></disqus>
