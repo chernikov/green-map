@@ -2,7 +2,7 @@
   <form [formGroup]="form" novalidate (keydown.enter)="$event.preventDefault()">
     <div class="input-wrap">
         <div class="input-title">
-          <label for="zoom">Zoom<span>*</span></label>
+          <label for="zoom">Приближення<span>*</span></label>
         </div>
   <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
         <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
@@ -10,7 +10,7 @@
     </div>
     <div class="input-wrap">
         <div class="input-title">
-          <label for="lat">Lat<span>*</span></label>
+          <label for="lat">Координата lat<span>*</span></label>
         </div>
   <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
         <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
@@ -18,15 +18,15 @@
     </div>
     <div class="input-wrap">
         <div class="input-title">
-          <label for="lng">Lng<span>*</span></label>
+          <label for="lng">координата lng<span>*</span></label>
         </div>
   <!--       <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
         <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div> -->
         <input id="lng" type="number" formControlName="lng" step="0.00001" autocomplete="off">
     </div>
     <div class="control-buttons">
-      <button class="button primary" (click)="onUpdateMap()"><span>Update map view</span></button>
-      <button class="button cancel" (click)="onMapReset()"><span>Reset map view</span></button>
+      <button class="button primary" (click)="onUpdateMap()"><span>Обновити позицію</span></button>
+      <button class="button cancel" (click)="onMapReset()"><span>Відновити позицію</span></button>
     </div>
   </form>
 </div>
@@ -34,18 +34,18 @@
 <div #mapElement class="map"></div>
 
 <div class="shape-form" *ngIf="selectedMapShape">
-  <h2>Edit shape</h2>
+  <h2>Редагувати зелену зону</h2>
   <form [formGroup]="shapeForm" novalidate>
     <div class="input-wrap">
       <div class="input-title">
-        <label for="title">Title<span>*</span></label>
+        <label for="title">Заголовок<span>*</span></label>
       </div>
-      <div class="input-error" *ngIf="shapeForm.get('title').hasError('required') && shapeForm.get('title').touched">Title is required field.</div>
+      <div class="input-error" *ngIf="shapeForm.get('title').hasError('required') && shapeForm.get('title').touched">Заголовок є обов'язковим полем.</div>
       <input id="title" type="text" formControlName="title" autocomplete="off" [class.error]="shapeForm.get('title').hasError('required') && shapeForm.get('title').touched">
     </div>
     <div class="input-wrap">
       <div class="input-title">
-        <label for="description">Description<span>*</span></label>
+        <label for="description">Описання<span>*</span></label>
       </div>
       <quill-editor id="description" formControlName="description" [style]="{'height':'320px'}"></quill-editor>
     </div>

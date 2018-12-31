@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef, OnDestroy } from '@angular/co
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { NotificationType } from 'angular2-notifications';
 import * as signalR from '@aspnet/signalr';
+import * as _ from 'underscore';
 
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
@@ -169,10 +170,6 @@ export class AdminMapComponent implements OnInit, OnDestroy {
       this.buildMap();
     }
   }
-
-
-
-
 
   buildMap() {
     const mapProp = {

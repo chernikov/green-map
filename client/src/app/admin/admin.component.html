@@ -19,22 +19,22 @@
               </div>
               <div class="input-wrap">
                   <div class="input-title">
-                  <label for="email">Email<span>*</span></label>
+                  <label for="email">Електронна пошта<span>*</span></label>
                   </div>
-                  <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Email is required field.</div>
-                  <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Email is invalid.</div>
+                  <div class="input-error" *ngIf="form.get('email').hasError('required') && form.get('email').touched">Електронна пошта є обов'язковим поле.</div>
+                  <div class="input-error" *ngIf="form.get('email').hasError('email') && form.get('email').touched">Неправильно введена електронна пошта.</div>
                   <input id="email" type="email" formControlName="email">
               </div>
               <div class="input-wrap">
                   <div class="input-title">
-                  <label for="password">Password<span>*</span></label>
+                  <label for="password">Пароль<span>*</span></label>
                   </div>
-                  <div class="input-error" *ngIf="form.get('password').hasError('required') && form.get('password').touched">Password is required field.</div>
+                  <div class="input-error" *ngIf="form.get('password').hasError('required') && form.get('password').touched">Пароль є обов'язковим поле.</div>
                   <input id="password" type="password" formControlName="password">
               </div>
               <div class="buttons-wrap">
-                  <button class="button primary" (click)="onLogin()"><span>Log in</span></button>
-                  <button class="button cancel" (click)="onCancel()"><span>Cancel</span></button>
+                  <button class="button primary" (click)="onLogin()"><span>Авторизуватись</span></button>
+                  <button class="button cancel" (click)="onCancel()"><span>На головну</span></button>
               </div>
           </form>
       </div>
