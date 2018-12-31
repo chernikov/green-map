@@ -1,5 +1,8 @@
 <div class="wrapper page-wrapper">
   <div class="zones-list">
-    <div class="zone" *ngFor="let zone of mapShapes" (click)="onSelectZone(zone.id)">{{ zone.title }}</div>
+    <div class="zone" *ngFor="let zone of mapShapes" (click)="onSelectZone(zone.id)">
+      <span>{{ zone.title }}</span>
+      <i class="fal fa-angle-right"></i>
+    </div>
   </div>
 </div>

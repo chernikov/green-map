@@ -1,3 +1,5 @@
+@import '~assets/scss/mixins.scss';
+
 .wrapper {
     height: 100vh;
     display: flex;
@@ -5,10 +7,39 @@
     padding: 0;
 }
 
+.zones-list {
+    overflow: auto;
+}
+
 .zone {
     height: 50px;
     cursor: pointer;
     align-items: center;
     display: flex;
-    border-bottom: 1px solid gray;
+    position: relative;
+    padding: 4px 20px;
+    border-bottom: 1px solid #efefef;
+    span {
+        font-size: 16px;
+        @include transition(all .3s ease-in-out);
+        @include text-overflow();
+        width: 94%;
+    }
+    i {
+        font-size: 29px;
+        position: absolute;
+        right: 30px;
+        opacity: .6;
+        opacity: 0;
+        @include transition(all .4s ease-in-out);
+    }
+    &:hover {
+        span {
+            color: $primary;
+        }
+        i {
+            opacity: 1;
+            right: 20px;
+        }
+    }
 }

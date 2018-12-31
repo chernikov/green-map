@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxGalleryOptions, NgxGalleryImage, NgxGalleryAnimation } from 'ngx-gallery';
-
-
-import { MapShapeItem } from '@classes/map-shape-item.class';
+import { ActivatedRoute } from '@angular/router';
 
 import { MetaService } from '@ngx-meta/core';
-
 import { IAppState } from '@store';
+
 import { NgRedux } from '@angular-redux/store';
-import { ActivatedRoute } from '@angular/router';
+
+import { MapShapeItem } from '@classes/map-shape-item.class';
+import { Map } from '@classes/map.class';
 
 @Component({
   selector: 'app-zone-detail',
@@ -17,6 +17,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 
 export class ZoneDetailComponent implements OnInit {
+  mapData:Map;
   currentShapeId:string;
   currentShape:MapShapeItem;
   allShapes:MapShapeItem[];
@@ -31,9 +32,9 @@ export class ZoneDetailComponent implements OnInit {
   ) {
     this.galleryOptions = [
       {
-          width: '600px',
-          height: '400px',
-          thumbnailsColumns: 4,
+          width: '100%',
+          height: '350px',
+          thumbnailsColumns: 3,
           imageAnimation: NgxGalleryAnimation.Slide
       },
       // max-width 800
@@ -56,8 +57,13 @@ export class ZoneDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getQueryParams();
     this.getRouterData();
     this.watchZonesChange();
+  }
+
+  getQueryParams() {
+    this.mapData = this._ngRedux.getState().map;
   }
 
   getRouterData() {

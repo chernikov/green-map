@@ -11,10 +11,10 @@ import { ZoneDetailComponent } from './zone-detail/zone-detail.component';
 const routes:Routes = [
   { path: '', component: DefaultComponent,
     children: [
-      { path: '', data: { depth: 1 }, component: HomeComponent },
-      { path: 'about', data: { depth: 2 }, component: AboutComponent },
-      { path: 'zones', data: { depth: 3 }, component: ZonesComponent },
-      { path: 'zone-detail/:id', data: { depth: 4 }, component: ZoneDetailComponent }
+      { path: '', data: { depth: 1 }, component: ZonesComponent },
+/*       { path: 'about', data: { depth: 2 }, component: AboutComponent },
+      { path: 'zones', data: { depth: 3 }, component: ZonesComponent }, */
+      { path: 'zone-detail/:id', data: { depth: 2 }, component: ZoneDetailComponent }
     ]
   }
 ];

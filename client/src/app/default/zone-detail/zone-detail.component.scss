@@ -1,6 +1,41 @@
+@import '~assets/scss/mixins.scss';
+
+.wrapper {
+    padding: 20px;
+    overflow: auto;
+    height: 100vh;
+}
+
+.breadcrumbs {
+    span {
+        max-width: 80%;
+        @include text-overflow();
+    }
+}
+
+h2 {
+    font-size: 23px;
+    line-height: 32px;
+    margin-top: 20px;
+}
+
+.gallery-wrap {
+    margin-top: 15px;
+    margin-bottom: 20px;
+}
+
+.comments-wrap {
+    margin-top: 30px;
+}
+
+
+
+
+
+/* 
 .image {
     width: 100px;
     height: 100px;
     background-size: cover;
     background-position: center center;
-}
+} */

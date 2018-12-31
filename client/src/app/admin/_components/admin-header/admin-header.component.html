@@ -1,8 +1,8 @@
 <div class="admin-header">
-  <h1>Welcome, admin</h1>
+  <h1>Вітаю, admin</h1>
   <ul>
     <li>
-      <a [routerLink]="['/']" [queryParams]="{ zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng  }">Home page</a>
+      <a [routerLink]="['/']" [queryParams]="{ zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng  }">Головна</a>
     </li>
     <li class="logout" (click)="onLogout()">
       Logout

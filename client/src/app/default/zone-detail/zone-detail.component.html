@@ -1,5 +1,17 @@
-{{ currentShape ? currentShape.title : '' }}
-<div class="div" [innerHTML]="currentShape ? currentShape.description : ''"></div>
-<ngx-gallery *ngIf="galleryImages && galleryImages.length" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
-
-<disqus *ngIf="currentShape && currentShape.id" [identifier]="currentShape.id" [title]="'Light Theme'"></disqus>
+<div class="wrapper">
+    <div class="breadcrumbs">
+        <a [routerLink]="['/']" [queryParams]="{ zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng  }">
+            Головна
+        </a>
+        <i class="fal fa-angle-right"></i>
+        <span>{{ currentShape ? currentShape.title : '' }}</span>
+    </div>
+    <h2>{{ currentShape ? currentShape.title : '' }}</h2>
+    <div class="gallery-wrap">
+        <ngx-gallery *ngIf="galleryImages && galleryImages.length" [options]="galleryOptions" [images]="galleryImages"></ngx-gallery>
+    </div>
+    <div class="text content-text" [innerHTML]="currentShape ? currentShape.description : ''"></div>
+    <div class="comments-wrap">
+        <disqus *ngIf="currentShape && currentShape.id" [identifier]="currentShape.id" [title]="'Light Theme'" [language]="'uk'"></disqus>
+    </div>
+</div>
