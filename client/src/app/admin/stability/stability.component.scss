@@ -1,0 +1,39 @@
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+
+td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    padding: 8px 15px;
+}
+
+td {
+    vertical-align: middle;
+    padding: 0;
+}
+
+tr:nth-child(even) {
+    background-color: #ddd;
+}
+
+.fix-width {
+    max-width: 200px;
+    overflow: auto;
+    display: inline-block;
+    padding: 8px 15px;
+    white-space: nowrap;
+}
+
+.create-error {
+    margin-top: 30px;
+    display: flex;
+    button {
+        margin-right: 20px;
+    }
+}

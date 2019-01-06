@@ -24,7 +24,7 @@ namespace green_map.Api {
             return _db.GetCollection<MapShapeItem>("MapShape").Find(_ => true).ToList();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, superAdmin")]
         [HttpPost]
         public MapShapeItemResponse Post([FromBody]MapShapeItem value) {
             var errors = new List<string>();

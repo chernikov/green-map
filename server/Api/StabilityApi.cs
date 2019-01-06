@@ -5,37 +5,36 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MongoDB.Driver;
 using green_map.Models;
+using Microsoft.AspNetCore.SignalR;
+using green_map.Hubs;
 
 namespace green_map.Api {
-    [Route("api/map")]
-    public class MapApi : BaseApi {
+    [Route("api/stability")]
+    public class StabilityApi : BaseApi {
         private readonly IMongoDatabase _db = null;
+        private readonly IHubContext<StabilityHub, IStabilityHub> _stabilityHub = null;
 
-        public MapApi(IOptions<ServerConfiguration> settings, IConfiguration config) : base(settings, config) {
+        public StabilityApi(IOptions<ServerConfiguration> settings, IConfiguration config, IHubContext<StabilityHub, IStabilityHub> stabilityHub) : base(settings, config) {
             _db = base.GetMongoDB();
+            _stabilityHub = stabilityHub;
         }
 
+        [Authorize(Roles = "superAdmin")]
         [HttpGet]
-        public Map Get() {
-            return _db.GetCollection<Map>("Map").Find(_ => true).FirstOrDefault();
+        public List<StabilityItem> Get() {
+            return _db.GetCollection<StabilityItem>("Stability").Find(_ => true).ToList();
         }
 
-        [Authorize(Roles = "admin, superAdmin")]
         [HttpPost]
-        public MapResponse Post([FromBody]Map value) {
+        public StabilityItemResponse Post([FromBody]StabilityItem value) {
             var errors = new List<string>();
-            var response = new MapResponse();
+            var response = new StabilityItemResponse();
 
             if(ModelState.IsValid) {
-                var collection = _db.GetCollection<Map>("Map");
-                var items = collection.Find(_ => true).ToList();
-
-                if(items.Count < 1 && value.Id == null) {
-                    collection.InsertOne(value);
-                } else {
-                    collection.ReplaceOneAsync(c => c.Id == value.Id, value);
-                }
+                var collection = _db.GetCollection<StabilityItem>("Stability");
+                collection.InsertOne(value);
                 response.Result = value;
+                _stabilityHub.Clients.All.StabilityChange("add", value);
             } else {
                 foreach(var item in ModelState) {
                     var key = item.Key;

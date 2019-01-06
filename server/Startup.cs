@@ -85,6 +85,7 @@ namespace green_map
 
             app.UseSignalR(routes => {
                 routes.MapHub<MapShapeHub>("/ws/map-shape");
+                routes.MapHub<StabilityHub>("/ws/stability");
             });
             app.UseStaticFiles(new StaticFileOptions() {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Upload")),

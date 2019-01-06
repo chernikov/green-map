@@ -1,0 +1,28 @@
+<table>
+  <tr>
+    <th>Added date</th>
+    <th>Url</th>
+    <th>Jwt token</th>
+    <th>Type</th>
+    <th>Message</th>
+    <th>Function name</th>
+    <th>Api url</th>
+    <th>Send data</th>
+  </tr>
+  <tr *ngFor="let item of stability">
+    <td><span class="fix-width">{{ item.addedDate | date: 'full' }}</span></td>
+    <td><span class="fix-width">{{ item.url }}</span></td>
+    <td><span class="fix-width">{{ item.jwtToken ? item.jwtToken : "-" }}</span></td>
+    <td><span class="fix-width">{{ item.type }}</span></td>
+    <td><span class="fix-width">{{ item.message ? item.message : "-" }}</span></td>
+    <td><span class="fix-width">{{ item.functionName ? item.functionName : "-" }}</span></td>
+    <td><span class="fix-width">{{ item.apiUrl ? item.apiUrl : "-" }}</span></td>
+    <td><span class="fix-width">{{ item.postData ? item.postData : "-" }}</span></td>
+  </tr>
+</table>
+
+<div class="create-error">
+  <button (click)="createAppError()">Create client error</button>
+  <button (click)="createApiError()">Create api error</button>
+  <button (click)="createApiErrorWithData()">Create api error with data</button>
+</div>

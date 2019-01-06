@@ -3,6 +3,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import * as signalR from '@aspnet/signalr';
 
+import { WsUrls } from '@project-configs';
+
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
@@ -12,15 +14,12 @@ import { MapShapeAction } from '@global-reducers/map-shape.reducer';
 import { MapAction } from '@global-reducers/map.reducer';
 
 import { MapDispatch } from '@dispatch-classes/map-dispatch.class';
-
 import { Map } from '@classes/map.class';
 import { MapShapeItem } from '@classes/map-shape-item.class';
 
 import { MapService } from '@services/map.service';
-
 import { RedirectToPolygonSubject } from '../../_core/subjects/redirect-to-polygon.subject';
 import { MapShapeService } from '@services/map-shape.service';
-
 
 @Component({
   selector: 'app-map',
@@ -137,7 +136,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   watchShapeUpdate() {
-    this.mapShapeConnection = new signalR.HubConnectionBuilder().withUrl('/ws/map-shape').build();
+    this.mapShapeConnection = new signalR.HubConnectionBuilder().withUrl(WsUrls.mapShape).build();
 
     this.mapShapeConnection.start();
 

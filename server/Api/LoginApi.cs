@@ -18,7 +18,6 @@ namespace green_map.Api {
             _db = base.GetMongoDB();
 
             var mapperConfig = new MapperConfiguration(cfg => cfg.CreateMap<UserRegistration, User>());
-
            _mapper = mapperConfig.CreateMapper();
         }
 

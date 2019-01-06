@@ -13,6 +13,7 @@ import { AdminHeaderComponent } from './_components/admin-header/admin-header.co
 import { AdminSidebarComponent } from './_components/admin-sidebar/admin-sidebar.component';
 import { AdminMapComponent } from './admin-map/admin-map.component';
 import { AdminSettingsComponent } from './admin-settings/admin-settings.component';
+import { StabilityComponent } from './stability/stability.component';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { AdminSettingsComponent } from './admin-settings/admin-settings.componen
         AdminHeaderComponent,
         AdminSidebarComponent,
         AdminMapComponent,
-        AdminSettingsComponent
+        AdminSettingsComponent,
+        StabilityComponent
     ],
     providers: [ ]
 })

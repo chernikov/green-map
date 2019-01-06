@@ -9,6 +9,7 @@ import { AuthTokenAction } from '@global-reducers/auth-token.reducer';
 import { AuthUserAction } from '@global-reducers/auth-user.reducer';
 
 import { Map } from '@classes/map.class';
+import { User } from '@classes/user.class';
 
 @Component({
   selector: 'app-admin-header',
@@ -18,14 +19,20 @@ import { Map } from '@classes/map.class';
 
 export class AdminHeaderComponent implements OnInit {
   mapData:Map;
+  user:User;
 
   constructor(
     private _router:Router,
-    private _ngRedux:NgRedux<IAppState>,
+    private _ngRedux:NgRedux<IAppState>
   ) { }
 
   ngOnInit() {
     this.getQueryParams();
+    this.getCurrentUser();
+  }
+
+  getCurrentUser() {
+    this.user = this._ngRedux.getState().authUser;
   }
 
   getQueryParams() {

@@ -1,5 +1,5 @@
 <div class="admin-header">
-  <h1>Вітаю, admin</h1>
+  <h1>{{ user && user.firstName && user.lastName ? ("Вітаю, " + user.firstName + ' ' + user.lastName) : "Вітаю" }}</h1>
   <ul>
     <li>
       <a [routerLink]="['/']" [queryParams]="{ zoom: mapData.zoom, lat: mapData.position.lat, lng: mapData.position.lng  }">Головна</a>

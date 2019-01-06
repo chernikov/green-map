@@ -20,7 +20,7 @@ namespace green_map.Api {
             return _db.GetCollection<Setting>("Setting").Find(_ => true).FirstOrDefault();
         }
 
-        [Authorize(Roles = "admin")]
+        [Authorize(Roles = "admin, superAdmin")]
         [HttpPost]
         public SettingResponse Post([FromBody]Setting value) {
             var errors = new List<string>();

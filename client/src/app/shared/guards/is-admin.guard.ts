@@ -34,7 +34,7 @@ export class IsAdminGuard implements CanLoad, CanActivate, CanActivateChild {
         let tokenHelper = new JwtHelperService();
         let userInfo = tokenHelper.decodeToken(token).user;
         let user = User.fromJS(JSON.parse(userInfo));
-        if(!tokenHelper.isTokenExpired(token) && user.role.code === 'admin') return true;
+        if(!tokenHelper.isTokenExpired(token) && (user.role.code === 'admin' || user.role.code === 'superAdmin')) return true;
     }
 
     this.router.navigateByUrl('/admin');

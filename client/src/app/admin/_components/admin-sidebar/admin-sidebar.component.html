@@ -6,5 +6,8 @@
     <li>
       <a [routerLink]="['/admin/settings']" [routerLinkActive]="['is-active']">Налаштування</a>
     </li>
+    <li *ngIf="user && user.role.code === 'superAdmin'">
+      <a [routerLink]="['/admin/stability']" [routerLinkActive]="['is-active']">Стабільність</a>
+    </li>
   </ul>
 </aside>

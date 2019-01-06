@@ -20,6 +20,10 @@ namespace green_map.Helpers {
         public void SeedRole() {
             List<Role> seedList = new List<Role> {
                 new Role() {
+                    Name = "Super admin",
+                    Code = "superAdmin"
+                },
+                new Role() {
                     Name = "Admin",
                     Code = "admin"
                 },
@@ -36,21 +40,34 @@ namespace green_map.Helpers {
         }
 
         public void SeedUser() {
-            var adminRoleId = _database.GetCollection<Role>("Role").Find(p => p.Code == "admin").First().Id;
-
-            var user = new UserRegistration {
-                FirstName = "Dima",
-                LastName = "Spodeniuk",
-                Email = "dima.spodeniuk@gmail.com",
-                Password = "12345",
-                RepeatPassword = "12345",
-                RoleId = adminRoleId
+            List<UserRegistration> seedList = new List<UserRegistration> {
+                new UserRegistration() {
+                    FirstName = null,
+                    LastName = null,
+                    Email = "green-map",
+                    Password = "qxwBmABcU9TbHgdD",
+                    RepeatPassword = "qxwBmABcU9TbHgdD",
+                    RoleId = "admin"
+                },
+                new UserRegistration() {
+                    FirstName = "Dima",
+                    LastName = "Spodeniuk",
+                    Email = "dima.spodeniuk@gmail.com",
+                    Password = "19911027",
+                    RepeatPassword = "19911027",
+                    RoleId = "superAdmin"
+                }
             };
+
+            foreach(var user in seedList) {
+                var roleId = _database.GetCollection<Role>("Role").Find(p => p.Code == user.RoleId).First().Id;
+                if(roleId != null) user.RoleId = roleId;
+            }
 
             var collection = _database.GetCollection<UserRegistration>("User");
             var items = collection.Find(_ => true).ToList();
 
-            if(items.Count < 1) collection.InsertOne(user);
+            if(items.Count < 1) collection.InsertMany(seedList);
         }
 
         public void SeedMap() {

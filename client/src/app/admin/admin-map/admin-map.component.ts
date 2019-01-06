@@ -4,6 +4,8 @@ import { NotificationType } from 'angular2-notifications';
 import * as signalR from '@aspnet/signalr';
 import * as _ from 'underscore';
 
+import { WsUrls } from '@project-configs';
+
 import { IAppState } from '@store';
 import { NgRedux } from '@angular-redux/store';
 
@@ -77,7 +79,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
   }
 
   watchShapeUpdate() {
-    this.mapShapeConnection = new signalR.HubConnectionBuilder().withUrl('/ws/map-shape').build();
+    this.mapShapeConnection = new signalR.HubConnectionBuilder().withUrl(WsUrls.mapShape).build();
 
     this.mapShapeConnection.start();
 

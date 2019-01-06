@@ -1,4 +1,4 @@
-<ng-container *ngIf="authUser && authUser.role.code === 'admin'; else adminLogin">
+<ng-container *ngIf="authUser && (authUser.role.code === 'admin' || authUser.role.code === 'superAdmin'); else adminLogin">
   <app-admin-header></app-admin-header>
   <div class="page-wrap">
       <div class="sidebar-wrap">
