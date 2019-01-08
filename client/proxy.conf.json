@@ -5,7 +5,7 @@
     "changeOrigin": true,
     "logLevel": "debug"
   },
-  "/Upload": {
+  "/download": {
     "target": "http://localhost:5000",
     "secure": false,
     "changeOrigin": true,

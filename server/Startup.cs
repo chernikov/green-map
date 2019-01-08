@@ -38,7 +38,6 @@ namespace green_map
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
 
             services.AddTransient<SeedDB>();
-            services.AddTransient<UploadManager>();
             
             services.AddSignalR();
 
@@ -65,10 +64,9 @@ namespace green_map
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedDB seeder, UploadManager uploadManager)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, SeedDB seeder)
         {
             seeder.Run();
-            uploadManager.CheckFoldersExist();
 
             if (env.IsDevelopment())
             {
@@ -80,16 +78,11 @@ namespace green_map
             }
 
             app.UseAuthentication();
-            //app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSignalR(routes => {
                 routes.MapHub<MapShapeHub>("/ws/map-shape");
                 routes.MapHub<StabilityHub>("/ws/stability");
-            });
-            app.UseStaticFiles(new StaticFileOptions() {
-                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), @"Upload")),
-                RequestPath = new PathString("/upload")
             });
         }
     }

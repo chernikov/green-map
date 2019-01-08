@@ -19,7 +19,7 @@ export class ImageUploadPreviewPipe implements PipeTransform {
                     observer.complete();
                 }
             } else {
-                observer.next(value);
+                observer.next("/download/" + value);
                 observer.complete();
             }
         });

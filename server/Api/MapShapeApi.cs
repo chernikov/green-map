@@ -7,6 +7,8 @@ using MongoDB.Driver;
 using green_map.Models;
 using green_map.Hubs;
 using Microsoft.AspNetCore.SignalR;
+using MongoDB.Driver.GridFS;
+using MongoDB.Bson;
 
 namespace green_map.Api {
     [Route("api/map-shape")]
@@ -76,15 +78,15 @@ namespace green_map.Api {
         [HttpDelete("{id}")]
         public MapShapeItemResponse Delete(string id) {
             var response = new MapShapeItemResponse();
+             GridFSBucket bucket = new GridFSBucket(_db);
 
             var item = _db.GetCollection<MapShapeItem>("MapShape").Find(i => i.Id == id).FirstOrDefault();
             _db.GetCollection<MapShapeItem>("MapShape").DeleteOne(i => i.Id == id);
 
             if(item != null && item.Images != null && item.Images.Count > 0) {
                 foreach(var image in item.Images) {
-                    if((System.IO.File.Exists(image))) {
-                        System.IO.File.Delete(image);
-                    }
+                    var objectId = ObjectId.Parse(image);
+                    bucket.Delete(objectId);
                 }
             }
 

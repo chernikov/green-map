@@ -87,17 +87,17 @@ export class ZoneDetailComponent implements OnInit {
       if(this.currentShape && this.currentShape.images && this.currentShape.images.length) {
         for(let image of this.currentShape.images) {
           this.galleryImages.push(new NgxGalleryImage({
-            small: image,
-            medium: image,
-            big: image
+            small: "/download/" + image,
+            medium: "/download/" + image,
+            big: "/download/" + image
           }));
         }
       }
-      this.setMetaTegs();
+      this.setMetaTags();
     }
   }
 
-  setMetaTegs() {
+  setMetaTags() {
     if(this.currentShape) {
       this._metaService.setTitle(this.currentShape.title);
       this._metaService.setTag('description', this.currentShape.description);

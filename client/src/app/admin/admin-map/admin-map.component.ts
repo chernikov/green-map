@@ -251,7 +251,6 @@ export class AdminMapComponent implements OnInit, OnDestroy {
       if(this.selectedMapShape) {
         this.selectedMapShape.title = data.title;
         this.selectedMapShape.description = data.description;
-        //this.selectedMapShape.images = data.images;
       }
     });
   }
@@ -271,23 +270,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
         this.mapDraw.setDrawingMode(null);
         google.maps.event.addListener(newShape, 'click', (e) => {
           newShape.setEditable(true);
-/*             if (e.vertex !== undefined) {
-                if (newShape.type === google.maps.drawing.OverlayType.POLYGON) {
-                    var path = newShape.getPaths().getAt(e.path);
-                    path.removeAt(e.vertex);
-                    if (path.length < 3) {
-                        newShape.setMap(null);
-                    }
-                }
-                if (newShape.type === google.maps.drawing.OverlayType.POLYLINE) {
-                    var path = newShape.getPath();
-                    path.removeAt(e.vertex);
-                    if (path.length < 2) {
-                        newShape.setMap(null);
-                    }
-                }
-            } */
-            this.setMapSelection(newShape);
+          this.setMapSelection(newShape);
         });
         this.setMapSelection(newShape);
       }
@@ -436,6 +419,7 @@ export class AdminMapComponent implements OnInit, OnDestroy {
       }
 
       this._shapeImageUploadService.upload(needSaveImages).subscribe(res => {
+        debugger;
         if(res.isSuccess) {
           let count = 0;
           for(let i = 0; i < data.images.length; i++) {

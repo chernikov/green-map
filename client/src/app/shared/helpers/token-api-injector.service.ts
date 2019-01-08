@@ -8,12 +8,18 @@ import { IAppState } from '@store';
 import { StabilityItem } from '@classes/stability-item.class';
 import { StabilityService } from '@services/stability.service';
 import { StabilityErrorType } from '@enums/stability.enum';
+import { Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
  
 export class TokenApiInjector implements HttpInterceptor {
+    isClient:boolean;
     constructor(
         private _ngRedux:NgRedux<IAppState>,
-        private _stabilityService:StabilityService
-    ) { }
+        private _stabilityService:StabilityService,
+        @Inject(PLATFORM_ID) _platformId
+    ) {
+        this.isClient = isPlatformBrowser(_platformId);
+    }
 
     intercept(request:HttpRequest<any>, next:HttpHandler): Observable<HttpEvent<any>> {
         let token:string;
@@ -30,7 +36,6 @@ export class TokenApiInjector implements HttpInterceptor {
  
         return next.handle(request).pipe(tap((event:HttpEvent<any>) => {}, (err: any) => {
             if(err instanceof HttpErrorResponse) {
-
                 let data = new StabilityItem({
                     url: window.location.href,
                     apiUrl: request.url,
