@@ -1,12 +1,14 @@
-using System;
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using green_map.Enums;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace green_map.Models {
-    public class StabilityItem {
+namespace green_map.Domains
+{
+    public class StabilityItem
+    {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonIgnoreIfDefault]

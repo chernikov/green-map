@@ -33,7 +33,7 @@
     "@nguniversal/express-engine": "~7.0.0",
     "@nguniversal/module-map-ngfactory-loader": "~7.0.0",
     "@ngx-meta/core": "^6.0.0",
-    "@types/googlemaps": "^3.30.16",
+    "@types/googlemaps": "^3.38.0",
     "@types/underscore": "^1.8.9",
     "angular-router-loader": "^0.8.5",
     "angular2-notifications": "^1.0.4",

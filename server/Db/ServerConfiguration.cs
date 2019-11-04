@@ -1,5 +1,7 @@
-namespace green_map.Models {
-    public class ServerConfiguration {
+namespace green_map.Configuration
+{
+    public class ServerConfiguration
+    {
         public string MongoConnectionString;
         public string MongoDatabase;
     }

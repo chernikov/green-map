@@ -1,8 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace green_map.Models {
-    public class Coordinate {
+namespace green_map.Domains
+{
+    public class Coordinate
+    {
 
         [DisplayName("Lat")]
         [Required(ErrorMessage = "is required")]

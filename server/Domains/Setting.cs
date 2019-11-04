@@ -1,10 +1,12 @@
-using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
-namespace green_map.Models {
-    public class Setting {
+namespace green_map.Domains
+{
+    public class Setting
+    {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         [BsonIgnoreIfDefault]

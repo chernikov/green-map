@@ -1,9 +1,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace green_map.Models {
-    public class Login {
-
+namespace green_map.Models
+{
+    public class LoginRequest
+    {
         [DisplayName("Email")]
         [Required(ErrorMessage = "is required")]
         [EmailAddress(ErrorMessage = "is invalid")]
